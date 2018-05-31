@@ -1,0 +1,183 @@
+@font-face {
+    font-family: 'CodeNewRoman';
+    src: url('/static/fonts/CodeNewRoman.otf');
+}
+
+body {
+    background-color: black;
+    font-family: 'CodeNewRoman';
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    background-image: url('/static/img/code.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    z-index: 999;
+}
+
+nav .navbar-nav > li > a{
+  color: lightblue !important;
+  }
+
+nav .navbar-nav > .active > a {
+    color: white !important;
+    background-color: transparent !important;
+}
+
+nav .navbar-nav > .active > a:hover,
+nav .navbar-nav > li > a:hover {
+    color: red !important;
+    background-color: transparent ! important;
+}
+
+nav .navbar-brand {
+    color: lightblue !important;
+}
+
+.main {
+    text-align: center;
+    color: lightgrey;
+    font-size: 45px;
+}
+
+.submain {
+    text-align: center;
+    color: lightgrey;
+    padding-bottom: 10px;
+    font-size: 30;
+}
+
+.aboutme {
+    color: white;
+}
+
+.iconcol {
+    text-align: center;
+}
+
+.socialicon {
+    font-size: 25px;
+    color: white;
+    background-color: transparent;
+}
+
+.socialicon:hover {
+    color: red;
+}
+
+.topcontainer {
+    padding-top: 60px;
+}
+
+.articlelink {
+    text-align: center;
+}
+
+.articleimg {
+    clip: rect(0px, 200px, 100px, 0px);
+}
+
+.articlefigure {
+   width: 800px;
+   overflow:hidden;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+}
+
+.articlefigure .articleimg {
+   display:block;
+   width:100%;
+   margin: -175px 0px;
+}
+
+.articletext {
+    color: lightblue;
+    font-size: 15px;
+}
+
+.articletext:hover,
+.articleimg:hover {
+    filter: invert(0.05);
+    color: red;
+}
+
+.crud {
+    color: white;
+}
+
+.crudbutton {
+    color: lightblue;
+}
+
+.crudbutton:hover {
+    color: red;
+}
+
+label {
+    color: lightblue;
+}
+
+input {
+    background-color: grey;
+    color: lightblue;
+    border: none;
+}
+
+.hideform > input {
+    visibility: hidden;
+}
+
+#submit {
+    margin-bottom: 30px;
+}
+
+.form {
+    margin-bottom: 5px;
+}
+
+.formlabel {
+    color: white;
+}
+
+.formblock {
+    margin-bottom: 20px;
+}
+
+.formsubmit {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 850px){
+    .articlefigure {
+        width: 650px;
+    }
+    .articlefigure .articleimg {
+        width: 100%;
+        margin: -110px 0px;
+    }
+}
+
+@media (max-width: 700px){
+    .articlefigure {
+        width: 500px;
+    }
+    .articlefigure .articleimg {
+        width: 100%;
+        margin: -70px 0px;
+    }
+}
+
+@media (max-width: 550px){
+    .articlefigure {
+        width: 450px;
+    }
+    .articlefigure .articleimg {
+        width: 100%;
+        margin: -50px 0px;
+    }
+}

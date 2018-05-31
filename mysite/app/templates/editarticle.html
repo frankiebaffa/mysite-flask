@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="main">
+                Edit
+            </h1>
+        </div>
+    </div>
+    <div class="row formblock">
+        {% for item in items %}
+        <form method="POST" action="/manage/articles/update">
+            <div class="col-md-6 formblock">
+                <div class="row">
+                    <p class="formlabel">{{ item.body }}</p>
+                </div>
+                <div class="row">
+                    <input class="form" type="hidden" value="{{ item.body }}" name="oldbody">
+                    <input class="form" type="text" value="{{ item.body }}" name="newbody">
+                </div>
+                <div class="row">
+                    <input class="form" type="hidden" value="{{ item.url }}" name="oldurl">
+                    <input class="form" type="text" value="{{ item.url }}" name="newurl">
+                </div>
+                <div class="row">
+                    <input class="form" type="hidden" value="{{ item.imageurl }}" name="oldimageurl">
+                    <input class="form" type="text" value="{{ item.imageurl }}" name="newimageurl">
+                </div>
+                <div class="row">
+                    <input class="form formbutton" type="submit" value="Update">
+                </div>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="main">
+            Create Article
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <form action="" method="post">
+        {{ form.hidden_tag() }}
+            <p>
+                {{ form.body.label }}<br>
+                {{ form.body(size=32) }}<br>
+                {% for error in form.body.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.url.label }}<br>
+                {{ form.url(size=64) }}<br>
+                {% for error in form.url.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.imageurl.label }}<br>
+                {{ form.imageurl(size=64) }}<br>
+                {% for error in form.imageurl.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+</div>
+{% endblock content %}
