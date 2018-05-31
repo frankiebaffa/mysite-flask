@@ -6,7 +6,7 @@ To install:
 
 	cd mysite-flask
 
-	[create a python virtual environment.  I use virtualenv so the following is the command I use]
+	[create a python virtual environment.  I use virtualenv so I use: ]
 	virtualenv --python=/path/to/your/python3.6/interpreter yourvirtualenvname
 
 	pip3.6 install -r requirements.txt
