@@ -154,6 +154,7 @@ input {
 
 .managelink {
     color: lightblue;
+    text-decoration: none !important;
 }
 
 .managelink:hover {
