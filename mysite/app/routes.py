@@ -6,8 +6,14 @@ from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
 from werkzeug.urls import url_parse
 import sqlite3
 
-def connect_db():
-    return sqlite3.connect('app.db')
+def get_table_dict(table):
+    database = sqlite3.connect('app.db')
+    cur = database.execute('select * from {} order by timestamp desc'.format(table))
+    columns = [column[0] for column in cur.description]
+    results = []
+    for row in cur.fetchall():
+        results.append(dict(zip(columns, row)))
+    return results
 
 @app.route('/')
 @app.route('/index')
@@ -18,13 +24,7 @@ def index():
 @app.route('/articles')
 @app.route('/articles/')
 def articles():
-    database = connect_db()
-    cur = database.execute('select body, url, imageurl, timestamp from Article ' +
-        'order by timestamp desc')
-    columns = [column[0] for column in cur.description]
-    results = []
-    for row in cur.fetchall():
-        results.append(dict(zip(columns, row)))
+    results = get_table_dict('Article')
     return render_template('articles.html', allarticles=results)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -44,6 +44,34 @@ def login():
             next_page = '/manage'
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+@app.route('/aboutme')
+@app.route('/aboutme/')
+def aboutme():
+    return render_template('aboutme.html')
+
+#==============================================================================
+#   External redirects
+#==============================================================================
+
+@app.route('/nominal')
+@app.route('/nominal/')
+def nominal():
+    return redirect('https://soundcloud.com/iamnominal')
+
+@app.route('/dds')
+@app.route('/dds/')
+def dds():
+    return redirect('https://soundcloud.com/doobiedecibelsystem')
+
+@app.route('/podcast')
+@app.route('/podcast/')
+def podcast():
+    return redirect('http://soundcloud.com/letsbefrankpodcast')
+
+#==============================================================================
+#   All routes beneath must have user authenticated
+#==============================================================================
 
 @app.route('/manage')
 @app.route('/manage/')
@@ -65,13 +93,7 @@ def managearticles():
             db.session.commit()
             flash('Posted!')
             return redirect('/manage/articles')
-        database = connect_db()
-        cur = database.execute('select id, body, timestamp, url, imageurl ' +
-        'from Article order by timestamp desc')
-        columns = [column[0] for column in cur.description]
-        results = []
-        for row in cur.fetchall():
-            results.append(dict(zip(columns, row)))
+        results = get_table_dict('Article')
         return render_template('managearticles.html', title='Manage Articles',
             createform=createform, items=results)
     else:
@@ -89,13 +111,7 @@ def manageposts():
             db.session.commit
             flash('Posted!')
             return redirect('/manage/posts')
-        database = connect_db()
-        cur = database.execute('select id, title, body, timestamp, imageurl ' +
-            'from Post order by timestamp desc')
-        columns = [column[0] for column in cur.description]
-        results = []
-        for row in cur.fetchall():
-            results.append(dict(zip(columns, row)))
+        results = get_table_dict('Post')
         return render_template('manageposts.html', title='Manage Posts',
             createform=createform, items=results)
     else:
@@ -139,28 +155,11 @@ def updatearticle():
     else:
         return redirect("/index")
 
-@app.route('/aboutme')
-@app.route('/aboutme/')
-def aboutme():
-    return render_template('aboutme.html')
-
-@app.route('/nominal')
-@app.route('/nominal/')
-def nominal():
-    return redirect('https://soundcloud.com/iamnominal')
-
-@app.route('/dds')
-@app.route('/dds/')
-def dds():
-    return redirect('https://soundcloud.com/doobiedecibelsystem')
-
-@app.route('/podcast')
-@app.route('/podcast/')
-def podcast():
-    return redirect('http://soundcloud.com/letsbefrankpodcast')
-
 @app.route('/logout')
 @app.route('/logout/')
 def logout():
-    logout_user()
-    return redirect('/index')
+    if current_user.is_authenticated:
+        logout_user()
+        return redirect('/index')
+    else:
+        return redirect('/index')
