@@ -152,6 +152,14 @@ input {
     margin-bottom: 40px;
 }
 
+.managelink {
+    color: lightblue;
+}
+
+.managelink:hover {
+    color: red;
+}
+
 @media (max-width: 850px){
     .articlefigure {
         width: 650px;
