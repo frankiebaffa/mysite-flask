@@ -23,6 +23,7 @@ def mynavbar():
     navconfig = Navbar(
         'Frankie Baffa',
         View('Home', 'index'),
+        View('Blog', 'blog'),
         View('Articles', 'articles'),
         View('About', 'aboutme'))
     nav.register_element('top', navconfig)
