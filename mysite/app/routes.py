@@ -1,8 +1,8 @@
 from app import app, db, models
-from app.models import Article, User
+from app.models import Article, User, Post, Project
 from flask import Flask, render_template, redirect, flash, request
 from flask_login import current_user, login_user, logout_user
-from app.forms import LoginForm, ArticleCreateForm
+from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
 from werkzeug.urls import url_parse
 import sqlite3
 
@@ -11,10 +11,12 @@ def connect_db():
 
 @app.route('/')
 @app.route('/index')
+@app.route('/index/')
 def index():
     return render_template('index.html')
 
 @app.route('/articles')
+@app.route('/articles/')
 def articles():
     database = connect_db()
     cur = database.execute('select body, url, imageurl, timestamp from Article ' +
@@ -26,6 +28,7 @@ def articles():
     return render_template('articles.html', allarticles=results)
 
 @app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect('/manage')
@@ -43,6 +46,7 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/manage')
+@app.route('/manage/')
 def manage():
     if current_user.is_authenticated:
         return render_template('manage.html')
@@ -50,6 +54,7 @@ def manage():
         return redirect('/index')
 
 @app.route('/manage/articles', methods=['GET', 'POST'])
+@app.route('/manage/articles/', methods=['GET', 'POST'])
 def managearticles():
     if current_user.is_authenticated:
         createform = ArticleCreateForm()
@@ -72,30 +77,30 @@ def managearticles():
     else:
         return redirect('/index')
 
-@app.route('/manage/articles/edit', methods=['GET', 'POST'])
-def editarticle():
+@app.route('/manage/posts', methods=['GET', 'POST'])
+@app.route('/manage/posts/', methods=['GET', 'POST'])
+def manageposts():
     if current_user.is_authenticated:
-        editform = ArticleEditForm()
-        if editform.validate_on_submit():
-            body = request.form.get("body")
-            article = Article.query.filter_by(body=body).first()
-            #if editform.body.data != "":
-            article.body = editform.body.data
-            if editform.url.data != "":
-                article.url = editform.url.data
-            if editform.imageurl.data != "":
-                article.imageurl = editform.imageurl.data
-            db.session.commit()
-            return redirect('/manage/articles')
+        createform = PostCreateForm()
+        if createform.validate_on_submit():
+            post = Post(title=createform.title.data, body=createform.body.data,
+                imageurl=createform.imageurl.data, author=current_user)
+            db.session.add(post)
+            db.session.commit
+            flash('Posted!')
+            return redirect('/manage/posts')
         database = connect_db()
-        cur = database.execute('select id, body, timestamp, url, imageurl ' +
-        'from Article order by timestamp desc')
+        cur = database.execute('select id, title, body, timestamp, imageurl ' +
+            'from Post order by timestamp desc')
         columns = [column[0] for column in cur.description]
         results = []
         for row in cur.fetchall():
             results.append(dict(zip(columns, row)))
-        return render_template('editarticles.html', title='Manage Articles',
-            editform=editform)
+        return render_template('manageposts.html', title='Manage Posts',
+            createform=createform, items=results)
+    else:
+        return redirect('/index')
+
 @app.route('/manage/articles/delete', methods=['POST'])
 def deletearticle():
     if current_user.is_authenticated:
@@ -104,6 +109,17 @@ def deletearticle():
         db.session.delete(article)
         db.session.commit()
         return redirect("/manage/articles")
+    else:
+        return redirect("/index")
+
+@app.route('/manage/posts/delete', methods=['POST'])
+def deletepost():
+    if current_user.is_authenticated:
+        title = request.form.get("title")
+        post = Post.query.filter_by(title=title).first()
+        db.session.delete(post)
+        db.session.commit()
+        return redirect("/manage/posts")
     else:
         return redirect("/index")
 
@@ -124,22 +140,27 @@ def updatearticle():
         return redirect("/index")
 
 @app.route('/aboutme')
+@app.route('/aboutme/')
 def aboutme():
     return render_template('aboutme.html')
 
 @app.route('/nominal')
+@app.route('/nominal/')
 def nominal():
     return redirect('https://soundcloud.com/iamnominal')
 
 @app.route('/dds')
+@app.route('/dds/')
 def dds():
     return redirect('https://soundcloud.com/doobiedecibelsystem')
 
 @app.route('/podcast')
+@app.route('/podcast/')
 def podcast():
     return redirect('http://soundcloud.com/letsbefrankpodcast')
 
 @app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
     return redirect('/index')
