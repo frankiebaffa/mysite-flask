@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
+    body = db.Column(db.String(140), unique=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     url = db.Column(db.String(500))
     imageurl = db.Column(db.String(500))
@@ -28,6 +28,23 @@ class Article(db.Model):
 
     def __repr__(self):
         return '<Article {}>'.format(self.body)
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(140), index=True)
+    body = db.Column(db.String(10000), index=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    imageurl = db.Column(db.String(500))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(140), index=True)
+    body = db.Column(db.String(10000), index=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    url = db.Column(db.String(500))
+    imageurl = db.Column(db.String(500))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 @login.user_loader
 def load_user(id):
