@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="main">
+                Blog
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for item in allblogs %}
+        <div class="col-lg-12">
+            <form class="articlelink" action="/blog/{{ item.id }}" method="post">
+                <input class="form" type="hidden" value="{{ item.id }}" name="blogid">
+                <button type="submit" name="blogpost" value="blogpost" class="btn-link">
+                    <figure class="articlefigure">
+                        <img class="articleimg" src="{{ item.imageurl }}" />
+                    </figure>
+                    <p class="articletext">{{ item.title }}</p>
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
