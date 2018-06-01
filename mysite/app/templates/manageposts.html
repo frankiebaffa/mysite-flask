@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-lg-12">
+        <h1 class="main">
+            Create Post
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <form action="" method="POST">
+            {{ createform.hidden_tag() }}
+                <p>
+                    {{ createform.title.label }}<br>
+                    {{ createform.title(size=64) }}<br>
+                    {% for error in createform.title.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ createform.body.label }}<br>
+                    {{ createform.body(size=64) }}<br>
+                    {% for error in createform.body.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ createform.imageurl.label }}<br>
+                    {{ createform.imageurl(size=64) }}<br>
+                    {% for error in createform.imageurl.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ createform.submit() }}</p>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="main">
+                Edit
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for item in items %}
+        <div class="col-lg-6 formblock">
+            <p class="formlabel">{{ item.title }}</p>
+            <p>
+                <form method="POST" action="/manage/posts/update">
+                    <input class="form" type="hidden" value="{{ item.title }}" name="oldtitle">
+                    <input size="64" class="form" type="text" value="{{ item.title }}" name="newtitle"><br>
+                    <input size="64" class="form" type="text" value="{{ item.body }}" name="newbody"><br>
+                    <input size="64" class="form" type="text" value="{{ item.imageurl }}" name="newimageurl"><br>
+                    <input class="form formbutton" type="submit" value="Update">
+                </form>
+                <form method="POST" action="/manage/posts/delete">
+                    <input class="form" type="hidden" value="{{ item.title }}" name="title">
+                    <input class="form formbutton" type="submit" value="Delete"><br>
+                </form>
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
