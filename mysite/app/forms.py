@@ -14,6 +14,12 @@ class ArticleCreateForm(FlaskForm):
     imageurl = StringField('Image URL', validators=[DataRequired()])
     submit = SubmitField('Post')
 
+class PostCreateForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    body = StringField('Body', validators=[DataRequired()])
+    imageurl = StringField('Image URL', validators=[DataRequired()])
+    submit = SubmitField('Post')
+
 class ArticleEditForm(FlaskForm):
     body = StringField('Body')
     url = StringField('URL')
