@@ -6,15 +6,6 @@ from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
 from werkzeug.urls import url_parse
 import sqlite3
 
-def get_table_dict(table):
-    database = sqlite3.connect('app.db')
-    cur = database.execute('select * from {} order by timestamp desc'.format(table))
-    columns = [column[0] for column in cur.description]
-    results = []
-    for row in cur.fetchall():
-        results.append(dict(zip(columns, row)))
-    return results
-
 @app.route('/')
 @app.route('/index')
 @app.route('/index/')
@@ -24,8 +15,20 @@ def index():
 @app.route('/articles')
 @app.route('/articles/')
 def articles():
-    results = get_table_dict('Article')
+    results = Article.query.all()
     return render_template('articles.html', allarticles=results)
+
+@app.route('/blog', methods=['GET', 'POST'])
+@app.route('/blog/', methods=['GET', 'POST'])
+def blog():
+    results = Post.query.all()
+    return render_template('blog.html', allblogs=results)
+
+@app.route('/blog/<id>', methods=['GET', 'POST'])
+@app.route('/blog/<id>/', methods=['GET', 'POST'])
+def blogpost(id):
+    post = Post.query.get(id)
+    return render_template('blogpost.html', post=post)
 
 @app.route('/login', methods=['GET', 'POST'])
 @app.route('/login/', methods=['GET', 'POST'])
@@ -93,7 +96,7 @@ def managearticles():
             db.session.commit()
             flash('Posted!')
             return redirect('/manage/articles')
-        results = get_table_dict('Article')
+        results = Article.query.all()
         return render_template('managearticles.html', title='Manage Articles',
             createform=createform, items=results)
     else:
@@ -111,7 +114,7 @@ def manageposts():
             db.session.commit
             flash('Posted!')
             return redirect('/manage/posts')
-        results = get_table_dict('Post')
+        results = Post.query.all()
         return render_template('manageposts.html', title='Manage Posts',
             createform=createform, items=results)
     else:
@@ -152,6 +155,22 @@ def updatearticle():
         article.imageurl = newimageurl
         db.session.commit()
         return redirect("/manage/articles")
+    else:
+        return redirect("/index")
+
+@app.route('/manage/posts/update', methods=['POST'])
+def updatepost():
+    if current_user.is_authenticated:
+        newtitle = request.form.get("newtitle")
+        oldtitle = request.form.get("oldtitle")
+        newbody = request.form.get("newbody")
+        newimageurl = request.form.get("newimageurl")
+        post = Post.query.filter_by(title=oldtitle).first()
+        post.title = newtitle
+        post.body = newbody
+        post.imageurl = newimageurl
+        db.session.commit()
+        return redirect("/manage/posts")
     else:
         return redirect("/index")
 
