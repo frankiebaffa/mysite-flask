@@ -106,6 +106,29 @@ nav .navbar-brand {
     color: red;
 }
 
+.mainblog {
+    text-align: center;
+    color: lightgrey;
+    font-size: 35px;
+}
+
+.submainblog{
+    text-align: center;
+    color: lightgrey;
+    margin-top: -30px;
+    padding-bottom: 10px;
+    font-size: 15px;
+}
+
+.blogbody {
+    color: lightblue;
+    font-size: 15px;
+}
+
+.blogimage {
+    object-fit: cover;
+}
+
 .crud {
     color: white;
 }
