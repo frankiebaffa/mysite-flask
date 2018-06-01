@@ -37,6 +37,9 @@ class Post(db.Model):
     imageurl = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def __repr__(self):
+        return '<Article {}>'.format(self.title)
+
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140), index=True)
@@ -45,6 +48,9 @@ class Project(db.Model):
     url = db.Column(db.String(500))
     imageurl = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Article {}>'.format(self.title)
 
 @login.user_loader
 def load_user(id):
