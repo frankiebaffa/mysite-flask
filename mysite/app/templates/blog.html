@@ -11,13 +11,12 @@
     </div>
     <div class="row">
         {% for item in allblogs %}
-        <div class="col-lg-12">
+        <div class="col-sm-4">
             <form class="articlelink" action="/blog/{{ item.id }}" method="post">
                 <input class="form" type="hidden" value="{{ item.id }}" name="blogid">
                 <button type="submit" name="blogpost" value="blogpost" class="btn-link">
-                    <figure class="articlefigure">
-                        <img class="articleimg" src="{{ item.imageurl }}" />
-                    </figure>
+                    <img class="articleimg" src="{{ item.imageurl }}"
+                            height="200" width="250" />
                     <p class="articletext">{{ item.title }}</p>
                 </button>
             </form>
