@@ -15,13 +15,13 @@ def index():
 @app.route('/articles')
 @app.route('/articles/')
 def articles():
-    results = Article.query.all()
+    results = Article.query.order_by(Article.timestamp.desc()).all()
     return render_template('articles.html', allarticles=results)
 
 @app.route('/blog', methods=['GET', 'POST'])
 @app.route('/blog/', methods=['GET', 'POST'])
 def blog():
-    results = Post.query.all()
+    results = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('blog.html', allblogs=results)
 
 @app.route('/blog/<id>', methods=['GET', 'POST'])
@@ -96,7 +96,7 @@ def managearticles():
             db.session.commit()
             flash('Posted!')
             return redirect('/manage/articles')
-        results = Article.query.all()
+        results = Article.query.order_by(Article.timestamp.desc()).all()
         return render_template('managearticles.html', title='Manage Articles',
             createform=createform, items=results)
     else:
@@ -114,7 +114,7 @@ def manageposts():
             db.session.commit
             flash('Posted!')
             return redirect('/manage/posts')
-        results = Post.query.all()
+        results = Post.query.order_by(Post.timestamp.desc()).all()
         return render_template('manageposts.html', title='Manage Posts',
             createform=createform, items=results)
     else:
