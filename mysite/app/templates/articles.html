@@ -11,11 +11,10 @@
     </div>
     <div class="row">
         {% for item in allarticles %}
-        <div class="col-lg-12">
+        <div class="col-sm-4">
             <a class="articlelink" href="{{ item.url }}" target="_blank">
-                <figure class="articlefigure">
-                    <img class="articleimg" src="{{ item.imageurl }}" />
-                </figure>
+                <img class="articleimg" src="{{ item.imageurl }}"
+                    height="200" width="250" />
                 <p class="articletext">{{ item.body }}</p>
             </a>
         </div>
