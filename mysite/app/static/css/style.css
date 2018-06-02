@@ -79,6 +79,7 @@ nav .navbar-brand {
 
 .articleimg {
     clip: rect(0px, 200px, 100px, 0px);
+    object-fit: cover;
 }
 
 .articlefigure {
@@ -98,6 +99,7 @@ nav .navbar-brand {
 .articletext {
     color: lightblue;
     font-size: 15px;
+    text-align: left;
 }
 
 .articletext:hover,
