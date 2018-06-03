@@ -1,16 +1,23 @@
 from app import app, db, models
 from app.models import Article, User, Post, Project
-from flask import Flask, render_template, redirect, flash, request
+from flask import Flask, url_for, render_template, redirect, flash, request
 from flask_login import current_user, login_user, logout_user
-from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
+from app.forms import LoginForm, ArticleCreateForm, PostCreateForm, ProjectCreateForm
 from werkzeug.urls import url_parse
 import sqlite3
+from flask_nav import Nav
+from flask_uploads import UploadSet, configure_uploads, IMAGES
+
+photos = UploadSet('photos', IMAGES)
 
 @app.route('/')
 @app.route('/index')
 @app.route('/index/')
+@app.route('/projects')
+@app.route('/projects/')
 def index():
-    return render_template('index.html')
+    results = Project.query.order_by(Project.timestamp.desc()).all()
+    return render_template('index.html', allprojects=results)
 
 @app.route('/articles')
 @app.route('/articles/')
@@ -29,6 +36,12 @@ def blog():
 def blogpost(id):
     post = Post.query.get(id)
     return render_template('blogpost.html', post=post)
+
+@app.route('/projects/<id>', methods=['GET', 'POST'])
+@app.route('/projects/<id>/', methods=['GET', 'POST'])
+def projectitem(id):
+    project = Project.query.get(id)
+    return render_template('projectitem.html', projectitem=project)
 
 @app.route('/login', methods=['GET', 'POST'])
 @app.route('/login/', methods=['GET', 'POST'])
@@ -80,9 +93,17 @@ def podcast():
 @app.route('/manage/')
 def manage():
     if current_user.is_authenticated:
-        return render_template('manage.html')
+        results = User.query.order_by(User.id.asc()).all()
+        return render_template('manage.html', items=results)
     else:
         return redirect('/index')
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST' and 'photo' in request.files:
+        photos.save(request.files['photo'])
+        return redirect('/manage')
+    return render_template('upload.html')
 
 @app.route('/manage/articles', methods=['GET', 'POST'])
 @app.route('/manage/articles/', methods=['GET', 'POST'])
@@ -91,7 +112,8 @@ def managearticles():
         createform = ArticleCreateForm()
         if createform.validate_on_submit():
             article = Article(body=createform.body.data, url=createform.url.data,
-                imageurl=createform.imageurl.data, author=current_user)
+                imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
+                author=current_user)
             db.session.add(article)
             db.session.commit()
             flash('Posted!')
@@ -109,9 +131,10 @@ def manageposts():
         createform = PostCreateForm()
         if createform.validate_on_submit():
             post = Post(title=createform.title.data, body=createform.body.data,
-                imageurl=createform.imageurl.data, author=current_user)
+                imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
+                author=current_user)
             db.session.add(post)
-            db.session.commit
+            db.session.commit()
             flash('Posted!')
             return redirect('/manage/posts')
         results = Post.query.order_by(Post.timestamp.desc()).all()
@@ -119,6 +142,24 @@ def manageposts():
             createform=createform, items=results)
     else:
         return redirect('/index')
+
+@app.route('/manage/projects', methods=['GET', 'POST'])
+@app.route('/manage/projects/', methods=['GET', 'POST'])
+def manageprojects():
+    if current_user.is_authenticated:
+        createform = ProjectCreateForm()
+        if createform.validate_on_submit():
+            project = Project(title=createform.title.data, body=createform.body.data,
+                url=createform.url.data,
+                imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
+                author=current_user)
+            db.session.add(project)
+            db.session.commit()
+            flash('Posted')
+            return redirect('/manage/projects')
+        results = Project.query.order_by(Project.timestamp.desc()).all()
+        return render_template('manageprojects.html', title='Manage Projects',
+            createform=createform, items=results)
 
 @app.route('/manage/articles/delete', methods=['POST'])
 def deletearticle():
@@ -139,6 +180,17 @@ def deletepost():
         db.session.delete(post)
         db.session.commit()
         return redirect("/manage/posts")
+    else:
+        return redirect("/index")
+
+@app.route('/manage/projects/delete', methods=['POST'])
+def deleteproject():
+    if current_user.is_authenticated:
+        title = request.form.get("title")
+        project = Project.query.filter_by(title=title).first()
+        db.session.delete(project)
+        db.session.commit()
+        return redirect("/manage/projects")
     else:
         return redirect("/index")
 
@@ -171,6 +223,24 @@ def updatepost():
         post.imageurl = newimageurl
         db.session.commit()
         return redirect("/manage/posts")
+    else:
+        return redirect("/index")
+
+@app.route('/manage/projects/update', methods=['POST'])
+def updateproject():
+    if current_user.is_authenticated:
+        newtitle = request.form.get("newtitle")
+        oldtitle = request.form.get("oldtitle")
+        newbody = request.form.get("newbody")
+        newurl = request.form.get("newurl")
+        newimageurl = request.form.get("newimageurl")
+        project = Project.query.filter_by(title=oldtitle).first()
+        project.title = newtitle
+        project.body = newbody
+        project.url = newurl
+        project.imageurl = newimageurl
+        db.session.commit()
+        return redirect("/manage/projects")
     else:
         return redirect("/index")
 
