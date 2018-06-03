@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="container-fluid">
@@ -10,11 +10,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-3">
-            <p class="aboutme">
-                This is a test of my home page!
-            </p>
+        {% for item in allprojects %}
+        <div class="col-sm-4">
+            <form class="articlelink" action="/projects/{{ item.id }}" method="post">
+                <input class="form" type="hidden" value="{{ item.id }}" name="projectid">
+                <button type="submit" name="blogpost" value="blogpost" class="btn-link">
+                    <img class="articleimg" src="{{ item.imageurl }}"
+                            height="200" width="250" />
+                    <p class="articletext">{{ item.title }}</p>
+                </button>
+            </form>
         </div>
+        {% endfor %}
     </div>
 </div>
-{% endblock %}
+{% endblock content %}
