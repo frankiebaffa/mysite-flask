@@ -10,30 +10,35 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 photos = UploadSet('photos', IMAGES)
 
+# Route to home page should be root, index, and the recent projects directory
 @app.route('/')
 @app.route('/index')
 @app.route('/index/')
 @app.route('/projects')
 @app.route('/projects/')
 def index():
+    # Query all projects with timestamp descending
     results = Project.query.order_by(Project.timestamp.desc()).all()
     return render_template('index.html', allprojects=results)
 
 @app.route('/articles')
 @app.route('/articles/')
 def articles():
+    # Query all articles by timestamp descending
     results = Article.query.order_by(Article.timestamp.desc()).all()
     return render_template('articles.html', allarticles=results)
 
 @app.route('/blog', methods=['GET', 'POST'])
 @app.route('/blog/', methods=['GET', 'POST'])
 def blog():
+    # Query all Posts by timestamp descending
     results = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('blog.html', allblogs=results)
 
 @app.route('/blog/<id>', methods=['GET', 'POST'])
 @app.route('/blog/<id>/', methods=['GET', 'POST'])
 def blogpost(id):
+    # Query single post by returned id
     post = Post.query.get(id)
     return render_template('blogpost.html', post=post)
 
