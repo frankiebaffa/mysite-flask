@@ -11,20 +11,18 @@ class LoginForm(FlaskForm):
 class ArticleCreateForm(FlaskForm):
     body = StringField('Body', validators=[DataRequired()])
     url = StringField('URL', validators=[DataRequired()])
-    imageurl = StringField('Image URL', validators=[DataRequired()])
+    imageurl = StringField('Image File Name', validators=[DataRequired()])
     submit = SubmitField('Post')
 
 class PostCreateForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     body = StringField('Body', validators=[DataRequired()])
-    imageurl = StringField('Image URL', validators=[DataRequired()])
+    imageurl = StringField('Image File Name', validators=[DataRequired()])
     submit = SubmitField('Post')
 
-class ArticleEditForm(FlaskForm):
-    body = StringField('Body')
-    url = StringField('URL')
-    imageurl = StringField('Image URL')
-    submit = SubmitField('Update')
-
-class ArticleDeleteForm(FlaskForm):
-    submit = SubmitField('Delete')
+class ProjectCreateForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    body = StringField('Body', validators=[DataRequired()])
+    url = StringField('URL', validators=[DataRequired()])
+    imageurl = StringField('Image File Name', validators=[DataRequired()])
+    submit = SubmitField('Post')
