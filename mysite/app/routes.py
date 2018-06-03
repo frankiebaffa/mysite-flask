@@ -47,17 +47,17 @@ def projectitem(id):
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect('/manage')
+        return redirect(url_for('manage'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect('/login')
+            return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = '/manage'
+            next_page = url_for('manage')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
@@ -96,13 +96,14 @@ def manage():
         results = User.query.order_by(User.id.asc()).all()
         return render_template('manage.html', items=results)
     else:
-        return redirect('/index')
+        return redirect(url_for('index'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST' and 'photo' in request.files:
-        photos.save(request.files['photo'])
-        return redirect('/manage')
+        imageurl = request.form.get("imageurl")
+        photos.save(request.files['photo'], name=imageurl + '.')
+        return redirect(url_for('manage'))
     return render_template('upload.html')
 
 @app.route('/manage/articles', methods=['GET', 'POST'])
@@ -117,12 +118,12 @@ def managearticles():
             db.session.add(article)
             db.session.commit()
             flash('Posted!')
-            return redirect('/manage/articles')
+            return redirect(url_for('managearticles'))
         results = Article.query.order_by(Article.timestamp.desc()).all()
         return render_template('managearticles.html', title='Manage Articles',
             createform=createform, items=results)
     else:
-        return redirect('/index')
+        return redirect(url_for('index'))
 
 @app.route('/manage/posts', methods=['GET', 'POST'])
 @app.route('/manage/posts/', methods=['GET', 'POST'])
@@ -136,12 +137,12 @@ def manageposts():
             db.session.add(post)
             db.session.commit()
             flash('Posted!')
-            return redirect('/manage/posts')
+            return redirect(url_for('manageposts'))
         results = Post.query.order_by(Post.timestamp.desc()).all()
         return render_template('manageposts.html', title='Manage Posts',
             createform=createform, items=results)
     else:
-        return redirect('/index')
+        return redirect(url_for('index'))
 
 @app.route('/manage/projects', methods=['GET', 'POST'])
 @app.route('/manage/projects/', methods=['GET', 'POST'])
@@ -156,7 +157,7 @@ def manageprojects():
             db.session.add(project)
             db.session.commit()
             flash('Posted')
-            return redirect('/manage/projects')
+            return redirect(url_for('manageprojects'))
         results = Project.query.order_by(Project.timestamp.desc()).all()
         return render_template('manageprojects.html', title='Manage Projects',
             createform=createform, items=results)
@@ -168,9 +169,9 @@ def deletearticle():
         article = Article.query.filter_by(body=body).first()
         db.session.delete(article)
         db.session.commit()
-        return redirect("/manage/articles")
+        return redirect(url_for('managearticles'))
     else:
-        return redirect("/index")
+        return redirect(url_for('index'))
 
 @app.route('/manage/posts/delete', methods=['POST'])
 def deletepost():
@@ -179,9 +180,9 @@ def deletepost():
         post = Post.query.filter_by(title=title).first()
         db.session.delete(post)
         db.session.commit()
-        return redirect("/manage/posts")
+        return redirect(url_for('manageposts'))
     else:
-        return redirect("/index")
+        return redirect(url_for('index'))
 
 @app.route('/manage/projects/delete', methods=['POST'])
 def deleteproject():
@@ -192,7 +193,7 @@ def deleteproject():
         db.session.commit()
         return redirect("/manage/projects")
     else:
-        return redirect("/index")
+        return redirect(url_for('index'))
 
 @app.route('/manage/articles/update', methods=['POST'])
 def updatearticle():
@@ -206,9 +207,9 @@ def updatearticle():
         article.url = newurl
         article.imageurl = newimageurl
         db.session.commit()
-        return redirect("/manage/articles")
+        return redirect(url_for('managearticles'))
     else:
-        return redirect("/index")
+        return redirect(url_for('index'))
 
 @app.route('/manage/posts/update', methods=['POST'])
 def updatepost():
@@ -222,9 +223,9 @@ def updatepost():
         post.body = newbody
         post.imageurl = newimageurl
         db.session.commit()
-        return redirect("/manage/posts")
+        return redirect(url_for('manageposts'))
     else:
-        return redirect("/index")
+        return redirect(url_for('index'))
 
 @app.route('/manage/projects/update', methods=['POST'])
 def updateproject():
@@ -240,15 +241,27 @@ def updateproject():
         project.url = newurl
         project.imageurl = newimageurl
         db.session.commit()
-        return redirect("/manage/projects")
+        return redirect(url_for('manageprojects'))
     else:
-        return redirect("/index")
+        return redirect(url_for('index'))
 
 @app.route('/logout')
 @app.route('/logout/')
 def logout():
     if current_user.is_authenticated:
         logout_user()
-        return redirect('/index')
+        return redirect(url_for('index'))
     else:
-        return redirect('/index')
+        return redirect(url_for('index'))
+
+#==============================================================================
+#   Error Pages
+#==============================================================================
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
