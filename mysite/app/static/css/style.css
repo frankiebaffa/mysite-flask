@@ -55,6 +55,10 @@ nav .navbar-brand {
     color: white;
 }
 
+.aboutcontent {
+    color: lightblue;
+}
+
 .iconcol {
     text-align: center;
 }
@@ -120,6 +124,25 @@ nav .navbar-brand {
     margin-top: -30px;
     padding-bottom: 10px;
     font-size: 15px;
+}
+
+.mainerror {
+    text-align: center;
+    color: lightgrey;
+    font-size: 35px;
+}
+
+.submainerror{
+    text-align: center;
+    color: lightgrey;
+    margin-top: -10px;
+    padding-bottom: 10px;
+    font-size: 15px;
+}
+
+.bodyerror {
+    text-align: center;
+    color: lightblue;
 }
 
 .blogbody {
