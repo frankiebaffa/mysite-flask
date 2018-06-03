@@ -104,7 +104,7 @@ nav .navbar-brand {
 
 .articletext:hover,
 .articleimg:hover {
-    filter: invert(0.05);
+    filter: invert(0.1);
     color: red;
 }
 
@@ -165,6 +165,10 @@ input {
     margin-bottom: 5px;
 }
 
+.uploadform {
+    margin-top: 10px
+}
+
 .formlabel {
     color: white;
 }
@@ -180,6 +184,19 @@ input {
 .managelink {
     color: lightblue;
     text-decoration: none !important;
+}
+
+.submainproject {
+    text-align: center;
+    color: lightgrey;
+    margin-top: -30px;
+    padding-bottom: 10px;
+    font-size: 15px;
+}
+
+.projectlink:hover
+.submainproject:hover {
+    color: red;
 }
 
 .btn-link{
