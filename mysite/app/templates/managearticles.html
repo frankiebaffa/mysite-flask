@@ -51,8 +51,11 @@
             <p>
                 <form method="POST" action="/manage/articles/update">
                     <input class="form" type="hidden" value="{{ item.body }}" name="oldbody">
+                    <label for="newbody">Body</label><br>
                     <input size="64" class="form" type="text" value="{{ item.body }}" name="newbody"><br>
+                    <label for="newurl">URL</label><br>
                     <input size="64" class="form" type="text" value="{{ item.url }}" name="newurl"><br>
+                    <label for="newimageurl">Image File Name</label><br>
                     <input size="64" class="form" type="text" value="{{ item.imageurl }}" name="newimageurl"><br>
                     <input class="form formbutton" type="submit" value="Update">
                 </form>
