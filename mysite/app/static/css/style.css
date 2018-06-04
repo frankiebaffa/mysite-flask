@@ -103,7 +103,7 @@ nav .navbar-brand {
 .articletext {
     color: lightblue;
     font-size: 15px;
-    text-align: left;
+    text-align: center;
 }
 
 .articletext:hover,
@@ -229,7 +229,7 @@ input {
   cursor:pointer;
   color:#0000EE;
   padding:0;
-  text-decoration:underline;
+  text-decoration: none !important;
   font-family:inherit;
   font-size:inherit;
 }
@@ -238,7 +238,12 @@ input {
     color: red;
 }
 
-@media (max-width: 850px){
+@media (min-width: 2000px) {
+    height: 300px;
+    width: 100%px;
+}
+
+/*@media (max-width: 2000px) and (min-width: 800px){
     .articlefigure {
         width: 650px;
     }
@@ -246,9 +251,20 @@ input {
         width: 100%;
         margin: -110px 0px;
     }
+    .blogimage {
+        height: 200px;
+        width: 200px;
+    }
+}*/
+
+@media (min-width: 912px) {
+    .blogimage {
+        height: 300px;
+        width: 100%;
+    }
 }
 
-@media (max-width: 700px){
+@media (max-width: 912px) and (min-width: 767px) {
     .articlefigure {
         width: 500px;
     }
@@ -256,14 +272,24 @@ input {
         width: 100%;
         margin: -70px 0px;
     }
+    .blogimage {
+        height: 200px;
+        width: 100%;
+    }
 }
 
-@media (max-width: 550px){
+@media (min-width: 0px) and (max-width: 767px) {
     .articlefigure {
         width: 450px;
     }
     .articlefigure .articleimg {
         width: 100%;
         margin: -50px 0px;
+    }
+    .blogimage {
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
+        height: 200px;
     }
 }
