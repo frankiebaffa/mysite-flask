@@ -103,6 +103,10 @@ def manage():
     else:
         return redirect(url_for('index'))
 
+# Route to upload page to add pictures to blog, article, and project posts.
+# I am figuring out how to implement flask-upload into the forms existing on
+# the manage/model pages so that the imageurl will not need to be typed in and
+# will automatically be included in the object with a submission of the form.
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST' and 'photo' in request.files:
