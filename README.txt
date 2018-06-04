@@ -9,6 +9,8 @@ To install:
 	[ create a python virtual environment.  I use virtualenv so I use: ]
 	virtualenv --python=/path/to/your/python3.6/interpreter yourvirtualenvname
 
+	source yourvirtualenvname/bin/activate
+
 	pip3.6 install -r requirements.txt
 
 	cd mysite
