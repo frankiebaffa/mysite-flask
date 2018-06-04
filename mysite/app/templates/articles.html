@@ -12,11 +12,14 @@
     <div class="row">
         {% for item in allarticles %}
         <div class="col-sm-4">
-            <a class="articlelink" href="{{ item.url }}" target="_blank">
-                <img class="articleimg" src="{{ item.imageurl }}"
-                    height="200" width="250" />
-                <p class="articletext">{{ item.body }}</p>
-            </a>
+            <form class="articlelink" action="{{ item.url }}" target="_blank" method="">
+                <input class="form" type="hidden" value="{{ item.id }}" name="projectid">
+                <button type="submit" name="blogpost" value="blogpost" class="btn-link">
+                    <img class="articleimg" src="{{ item.imageurl }}"
+                            height="200" width="250" />
+                    <p class="articletext">{{ item.body }}</p>
+                </button>
+            </form>
         </div>
         {% endfor %}
     </div>
