@@ -2,12 +2,16 @@ from app import app, db, models
 from app.models import Article, User, Post, Project
 from flask import Flask, url_for, render_template, redirect, flash, request
 from flask_login import current_user, login_user, logout_user
-from app.forms import LoginForm, ArticleCreateForm, PostCreateForm, ProjectCreateForm
+from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
+from app.forms import ProjectCreateForm, ContactForm, PostEditForm
+from app.forms import ArticleEditForm, ProjectEditForm
 from werkzeug.urls import url_parse
 import sqlite3
 from flask_nav import Nav
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask_mail import Message, Mail
 
+mail = Mail()
 photos = UploadSet('photos', IMAGES)
 
 # Route to home page should be root, index, and the recent projects directory
@@ -66,6 +70,29 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
+@app.route('/contact', methods=['GET', 'POST'])
+@app.route('/contact/', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    sent = ''
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash('All fields are required.')
+            return render_template('contact.html', form=form)
+        else:
+            msg = Message(form.subject.data, sender='frankiebaffa.com@gmail.com',
+                recipients=['frankiebaffa@gmail.com'])
+            msg.body = """
+            From: %s <%s>
+            %s
+            """ % (form.name.data, form.email.data, form.message.data)
+            mail.send(msg)
+            sent = 'Your message has been sent!'
+            return render_template('contact.html', form=form, sent=sent)
+
+    elif request.method == 'GET':
+        return render_template('contact.html', form=form, sent=sent)
+
 @app.route('/aboutme')
 @app.route('/aboutme/')
 def aboutme():
@@ -120,6 +147,7 @@ def upload():
 def managearticles():
     if current_user.is_authenticated:
         createform = ArticleCreateForm()
+        editform = ArticleEditForm()
         if createform.validate_on_submit():
             article = Article(body=createform.body.data, url=createform.url.data,
                 imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
@@ -130,7 +158,7 @@ def managearticles():
             return redirect(url_for('managearticles'))
         results = Article.query.order_by(Article.timestamp.desc()).all()
         return render_template('managearticles.html', title='Manage Articles',
-            createform=createform, items=results)
+            createform=createform, editform=editform, items=results)
     else:
         return redirect(url_for('index'))
 
@@ -139,6 +167,7 @@ def managearticles():
 def manageposts():
     if current_user.is_authenticated:
         createform = PostCreateForm()
+        editform = PostEditForm()
         if createform.validate_on_submit():
             post = Post(title=createform.title.data, body=createform.body.data,
                 imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
@@ -149,7 +178,7 @@ def manageposts():
             return redirect(url_for('manageposts'))
         results = Post.query.order_by(Post.timestamp.desc()).all()
         return render_template('manageposts.html', title='Manage Posts',
-            createform=createform, items=results)
+            createform=createform, editform=editform, items=results)
     else:
         return redirect(url_for('index'))
 
@@ -158,6 +187,7 @@ def manageposts():
 def manageprojects():
     if current_user.is_authenticated:
         createform = ProjectCreateForm()
+        editform = ProjectEditForm()
         if createform.validate_on_submit():
             project = Project(title=createform.title.data, body=createform.body.data,
                 url=createform.url.data,
@@ -169,7 +199,7 @@ def manageprojects():
             return redirect(url_for('manageprojects'))
         results = Project.query.order_by(Project.timestamp.desc()).all()
         return render_template('manageprojects.html', title='Manage Projects',
-            createform=createform, items=results)
+            createform=createform, editform=editform, items=results)
 
 @app.route('/manage/articles/delete', methods=['POST'])
 def deletearticle():
