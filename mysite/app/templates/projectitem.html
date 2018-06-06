@@ -3,18 +3,24 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-12 blogpage">
-        <h1 class="mainblog">
-            {{ projectitem.title }}
-        </h1><br>
-        <a class="projectlink" href="{{ projectitem.url }}" target="_blank"><h2 class="submainproject">
+        <div class="containbox">
+            <h1 class="mainblog transbox">
+                {{ projectitem.title }}
+            </h1>
+        </div><br>
+        <div class="containbox">
+            <a class="projectlink" href="{{ projectitem.url }}" target="_blank"><h2 class="submainproject transbox">
             {{ projectitem.url }}
-        </h2></a><br>
+            </h2></a>
+        </div><br>
         <div class="col-sm-3">
             <img class="blogimage" src="{{ projectitem.imageurl }}" title="blogimage"
                 height="200" width="200" />
         </div>
         <div class="col-sm-9">
-            <p class="blogbody">{{ projectitem.body }}</p>
+            <div class="pcontainbox">
+                <p class="blogbody transbox">{{ projectitem.body }}</p>
+            </div>
         </div>
     </div>
 </div>
