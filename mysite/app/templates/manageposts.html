@@ -13,27 +13,27 @@
             <form action="" method="POST">
             {{ createform.hidden_tag() }}
                 <p>
-                    {{ createform.title.label }}<br>
-                    {{ createform.title(size=64) }}<br>
+                    {{ createform.title.label(class_="formlabel") }}<br>
+                    {{ createform.title(class_="forminput") }}<br>
                     {% for error in createform.title.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
                 <p>
-                    {{ createform.body.label }}<br>
-                    {{ createform.body(size=64) }}<br>
-                    {% for error in createform.body.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ createform.imageurl.label }}<br>
-                    {{ createform.imageurl(size=64) }}<br>
+                    {{ createform.imageurl.label(class_="formlabel") }}<br>
+                    {{ createform.imageurl(class_="forminput") }}<br>
                     {% for error in createform.imageurl.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
-                <p>{{ createform.submit() }}</p>
+                <p>
+                    {{ createform.body.label(class_="formlabel") }}<br>
+                    {{ createform.body(class_="formtextarea") }}<br>
+                    {% for error in createform.body.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ createform.submit(class_="formsubmit") }}</p>
             </form>
         </div>
     </div>
@@ -47,24 +47,44 @@
     <div class="row">
         {% for item in items %}
         <div class="col-lg-6 formblock">
-            <p class="formlabel">{{ item.title }}</p>
+            <p class="crudlabel">{{ item.title }}</p>
             <p>
-                <form method="POST" action="/manage/posts/update">
-                    <input class="form" type="hidden" value="{{ item.title }}" name="oldtitle">
-                    <label for="newtitle">Title</label><br>
-                    <input size="64" class="form" type="text" value="{{ item.title }}" name="newtitle"><br>
-                    <label for="newbody">Body</label><br>
-                    <input size="64" class="form" type="text" value="{{ item.body }}" name="newbody"><br>
-                    <label for="newimageurl">Image File Name</label><br>
-                    <input size="64" class="form" type="text" value="{{ item.imageurl }}" name="newimageurl"><br>
-                    <input class="form formbutton" type="submit" value="Update">
+                <form class="editform" action="{{ url_for('updatepost') }}" method="POST">
+                {{ editform.hidden_tag() }}
+                <input class="form" type="hidden" value="{{ item.title }}" name="oldtitle">
+                    <p>
+                        {{ editform.newtitle.label(class_="formlabel") }}<br>
+                        {{ editform.newtitle(class_="forminput", value=item.title) }}<br>
+                        {% for error in editform.newtitle.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        {{ editform.newimageurl.label(class_="formlabel") }}<br>
+                        {{ editform.newimageurl(class_="forminput", value=item.imageurl) }}<br>
+                        {% for error in editform.newimageurl.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        {{ editform.newbody.label(class_="formlabel") }}<br>
+                        {{ editform.newbody(class_="formtextarea", id=item.id) }}<br>
+                        {% for error in editform.newbody.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>{{ editform.submit(class_="formsubmit") }}</p>
                 </form>
                 <form method="POST" action="/manage/posts/delete">
                     <input class="form" type="hidden" value="{{ item.title }}" name="title">
-                    <input class="form formbutton" type="submit" value="Delete"><br>
+                    <input class="formdelete" type="submit" value="Delete"><br>
                 </form>
             </p>
         </div>
+        <script>
+            var textarea = document.getElementById('{{ item.id }}');
+            textarea.innerHTML = "{{ item.body }}"
+        </script>
         {% endfor %}
     </div>
 </div>
