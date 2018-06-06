@@ -166,11 +166,51 @@ nav .navbar-brand {
     color: red;
 }
 
-label {
+.formlabel {
     color: lightblue;
+    margin-bottom: -5px;
 }
 
-input {
+.forminput {
+    background-color: grey;
+    color: lightblue;
+    border: none;
+    margin-bottom: 10px;
+    width: 400px;
+}
+
+.formtextarea {
+    background-color: grey;
+    color: lightblue;
+    border: none;
+    margin-bottom: -5px;
+    width: 400px;
+    height: 150px;
+}
+
+.formsubmit {
+    background-color: grey;
+    color: lightblue;
+    border: none;
+}
+
+.formdelete {
+    background-color: grey;
+    color: lightblue;
+    border: none;
+    margin-left: 70px;
+}
+
+.editform {
+    margin-bottom: -65px;
+}
+
+.crudlabel {
+    color: white;
+   	font-size: 18px;
+}
+
+.crudformsubmit {
     background-color: grey;
     color: lightblue;
     border: none;
@@ -192,16 +232,8 @@ input {
     margin-top: 10px
 }
 
-.formlabel {
-    color: white;
-}
-
 .formblock {
     margin-bottom: 20px;
-}
-
-.formsubmit {
-    margin-bottom: 40px;
 }
 
 .managelink {
