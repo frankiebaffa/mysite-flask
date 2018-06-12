@@ -84,6 +84,7 @@ def contact():
                 recipients=['frankiebaffa@gmail.com'])
             msg.body = """
             From: %s <%s>
+
             %s
             """ % (form.name.data, form.email.data, form.message.data)
             mail.send(msg)
