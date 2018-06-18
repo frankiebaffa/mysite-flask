@@ -1,10 +1,11 @@
 from app import app, db, models
-from app.models import Article, User, Post, Project
+from app.models import Article, User, Post, Project, About
 from flask import Flask, url_for, render_template, redirect, flash, request
 from flask_login import current_user, login_user, logout_user
 from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
 from app.forms import ProjectCreateForm, ContactForm, PostEditForm
-from app.forms import ArticleEditForm, ProjectEditForm
+from app.forms import ArticleEditForm, ProjectEditForm, AboutCreateForm
+from app.forms import AboutEditForm
 from werkzeug.urls import url_parse
 import sqlite3
 from flask_nav import Nav
@@ -18,26 +19,33 @@ photos = UploadSet('photos', IMAGES)
 @app.route('/')
 @app.route('/index')
 @app.route('/index/')
-@app.route('/projects')
-@app.route('/projects/')
 def index():
+    allprojects = Project.query.order_by(Project.timestamp.desc()).all()
+    allarticles = Article.query.order_by(Article.timestamp.desc()).all()
+    allposts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('indexscroll.html', allprojects=allprojects,
+        allposts=allposts, allarticles=allarticles)
+
+#@app.route('/projects')
+#@app.route('/projects/')
+#def projects():
     # Query all projects with timestamp descending
-    results = Project.query.order_by(Project.timestamp.desc()).all()
-    return render_template('index.html', allprojects=results)
+#    results = Project.query.order_by(Project.timestamp.desc()).all()
+#    return render_template('projects.html', allprojects=results)
 
-@app.route('/articles')
-@app.route('/articles/')
-def articles():
+#@app.route('/articles')
+#@app.route('/articles/')
+#def articles():
     # Query all articles by timestamp descending
-    results = Article.query.order_by(Article.timestamp.desc()).all()
-    return render_template('articles.html', allarticles=results)
+#    results = Article.query.order_by(Article.timestamp.desc()).all()
+#    return render_template('articles.html', allarticles=results)
 
-@app.route('/blog', methods=['GET', 'POST'])
-@app.route('/blog/', methods=['GET', 'POST'])
-def blog():
+#@app.route('/blog', methods=['GET', 'POST'])
+#@app.route('/blog/', methods=['GET', 'POST'])
+#def blog():
     # Query all Posts by timestamp descending
-    results = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('blog.html', allblogs=results)
+#    results = Post.query.order_by(Post.timestamp.desc()).all()
+#    return render_template('blog.html', allposts=results)
 
 @app.route('/blog/<id>', methods=['GET', 'POST'])
 @app.route('/blog/<id>/', methods=['GET', 'POST'])
@@ -94,10 +102,11 @@ def contact():
     elif request.method == 'GET':
         return render_template('contact.html', form=form, sent=sent)
 
-@app.route('/aboutme')
+@app.route('/aboutm')
 @app.route('/aboutme/')
 def aboutme():
-    return render_template('aboutme.html')
+    about = About.query.order_by(About.id).all()
+    return render_template('aboutme.html', about=about)
 
 #==============================================================================
 #   External redirects
@@ -142,6 +151,24 @@ def upload():
         photos.save(request.files['photo'], name=imageurl + '.')
         return redirect(url_for('manage'))
     return render_template('upload.html')
+
+@app.route('/manage/about', methods=['GET', 'POST'])
+@app.route('/manage/about/', methods=['GET', 'POST'])
+def manageabout():
+    if current_user.is_authenticated:
+        createform = AboutCreateForm()
+        editform = AboutEditForm()
+        if createform.validate_on_submit():
+            about = About(body=createform.body.data, author=current_user)
+            db.session.add(about)
+            db.session.commit()
+            flash('Posted')
+            return redirect(url_for('manageabout'))
+        results = About.query.order_by(About.id).all()
+        return render_template('manageabout.html', title='Manage About',
+            createform=createform, editform=editform, items = results)
+    else:
+        return redirect(url_for('index'))
 
 @app.route('/manage/articles', methods=['GET', 'POST'])
 @app.route('/manage/articles/', methods=['GET', 'POST'])
@@ -213,6 +240,17 @@ def deletearticle():
     else:
         return redirect(url_for('index'))
 
+@app.route('/manage/about/delete', methods=['POST'])
+def deleteabout():
+    if current_user.is_authenticated:
+        id = request.form.get("id")
+        about = About.query.filter_by(id=id).first()
+        db.session.delete(about)
+        db.session.commit()
+        return redirect(url_for('manageabout'))
+    else:
+        return redirect(url_for('index'))
+
 @app.route('/manage/posts/delete', methods=['POST'])
 def deletepost():
     if current_user.is_authenticated:
@@ -246,6 +284,18 @@ def updatearticle():
         article.body = newbody
         article.url = newurl
         article.imageurl = newimageurl
+        db.session.commit()
+        return redirect(url_for('managearticles'))
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/manage/about/update', methods=['POST'])
+def updateabout():
+    if current_user.is_authenticated:
+        newbody = request.form.get("newbody")
+        oldbody = request.form.get("oldbody")
+        about = About.query.filter_by(body=oldbody).first()
+        about.body = newbody
         db.session.commit()
         return redirect(url_for('managearticles'))
     else:
