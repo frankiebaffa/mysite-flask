@@ -33,10 +33,13 @@ class ProjectCreateForm(FlaskForm):
     submit = SubmitField('Post')
 
 class ContactForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    email = StringField('Email Address', [validators.Required(), validators.Email()])
-    subject = StringField('Subject', validators=[DataRequired()])
-    message = TextAreaField("Message", validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()], render_kw={"placeholder": " Name"})
+    email = StringField('Email Address', [validators.Required(), validators.Email()],
+        render_kw={"placeholder": " Email"})
+    subject = StringField('Subject', validators=[DataRequired()],
+        render_kw={"placeholder": " Subject"})
+    message = TextAreaField("Message", validators=[DataRequired()],
+        render_kw={"placeholder": " Message"})
     submit = SubmitField('Send')
 
 class ArticleEditForm(FlaskForm):
@@ -55,5 +58,13 @@ class ProjectEditForm(FlaskForm):
     newtitle = StringField('Title', validators=[DataRequired()])
     newurl = StringField('URL', validators=[DataRequired()])
     newimageurl = StringField('Image File Name', validators=[DataRequired()])
+    newbody = TextAreaField('Body', validators=[DataRequired()])
+    submit = SubmitField('Update')
+
+class AboutCreateForm(FlaskForm):
+    body = TextAreaField('Body', validators=[DataRequired()])
+    submit = SubmitField('Create')
+
+class AboutEditForm(FlaskForm):
     newbody = TextAreaField('Body', validators=[DataRequired()])
     submit = SubmitField('Update')
