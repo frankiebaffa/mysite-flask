@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     articles = db.relationship('Article', backref='author', lazy='dynamic')
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     projects = db.relationship('Project', backref='author', lazy='dynamic')
+    about = db.relationship('About', backref='author', lazy='dynamic')
 
     # When called, display the instance as '<User username>'
     def __repr__(self):
@@ -82,7 +83,18 @@ class Project(db.Model):
 
     # When called, display '<Post title>'
     def __repr__(self):
-        return '<Post {}>'.format(self.title)
+        return '<Projects {}>'.format(self.title)
+
+# Make a model for the paragraph(s) in about me
+class About(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(10000), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    user = db.relationship(User)
+
+    def __repr__(self):
+        return 'About {}'.format(self.id)
 
 @login.user_loader
 def load_user(id):
