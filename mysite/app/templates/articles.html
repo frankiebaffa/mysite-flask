@@ -1,28 +1,40 @@
-{% extends "base.html" %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sectionstyle.css') }}">
+{% endblock style %}
+
+{% extends "basenew.html" %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid gencontainer articlecontainer" id="articles">
+    <div class="row subhead">
+        <div class="col-lg-12">
+            <h1 class="newmain">
+                <a href="{{ url_for('articles') }}" class="headlink">Articles</a>
+            </h1>
+            <p class="descript">
+                A collection of articles that I have read and found relevant,
+                interesting, or just plain old worthy.
+            </p>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="containbox">
-                <h1 class="main transbox">
-                    Articles
-                </h1>
+        {% for article in allarticles %}
+        <div class="col-md-4">
+            <div class="card">
+                <a href="{{ article.url }}">
+                    <img  class="cardimg" src="{{ article.imageurl }}" alt="{{ article.body }}">
+                    <div class="cardcontainer">
+                        <p class="cardp">{{ article.body }}</p>
+                    </div>
+                </a>
             </div>
         </div>
-    </div>
-    <div class="row">
-        {% for item in allarticles %}
-        <div class="col-sm-4">
-            <form class="articlelink" action="{{ item.url }}" target="_blank" method="">
-                <input class="form" type="hidden" value="{{ item.id }}" name="projectid">
-                <button type="submit" name="blogpost" value="blogpost" class="btn-link">
-                    <img class="articleimg" src="{{ item.imageurl }}"
-                            height="250" width="250" />
-                </button>
-            </form>
-        </div>
         {% endfor %}
+        </div>
     </div>
 </div>
+{% include 'footer.html' %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/cardsize.js') }}"></script>
 {% endblock content %}
