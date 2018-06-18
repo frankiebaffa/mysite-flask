@@ -1,0 +1,24 @@
+.listcontainer {
+    width: 100%;
+    overflow: auto;
+    height: 450px;
+}
+
+.cardlist {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.card {
+    width: 20%;
+}
+
+.cardimg {
+    width: 90%
+}
+
+.cardlist .card {
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
