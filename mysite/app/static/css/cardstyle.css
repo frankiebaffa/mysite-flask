@@ -2,10 +2,6 @@
     width: 100%;
     overflow: auto;
     height: 450px;
-}
-
-.cardlist {
-    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
 
