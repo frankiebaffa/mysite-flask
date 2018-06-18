@@ -1,7 +1,7 @@
 {% if current_user.is_authenticated %}
 {{ nav.adminnavbar.render() }}
-{% include "header.html" %}
+
 {% else %}
 {{ nav.mynavbar.render() }}
-{% include "header.html" %}
+
 {% endif %}
