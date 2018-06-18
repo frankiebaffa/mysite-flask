@@ -60,8 +60,6 @@ def mynavbar():
     navconfig = Navbar(
         'Frankie Baffa',
         View('Home', 'index'),
-        View('Blog', 'blog'),
-        View('Articles', 'articles'),
         View('About', 'aboutme'),
         View('Contact', 'contact'))
     nav.register_element('top', navconfig)
@@ -73,8 +71,6 @@ def adminnavbar():
     navconfig = Navbar(
         'Frankie Baffa',
         View('Home', 'index'),
-        View('Blog', 'blog'),
-        View('Articles', 'articles'),
         View('About', 'aboutme'),
         View('Manage', 'manage'),
         View('Contact', 'contact'),
