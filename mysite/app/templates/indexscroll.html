@@ -46,7 +46,7 @@
         <div class="cardlist">
             {% for post in allposts %}
                 <div class="card">
-                    <a href="/blog/{{ post.id }}" target="_blank">
+                    <a href="/blog/{{ post.id }}">
                         <img  class="cardimg" src="{{ post.imageurl }}" alt="{{ post.title }}">
                         <div class="cardcontainer">
                             <p class="cardp">{{ post.title }}</p>
@@ -72,7 +72,7 @@
         <div class="cardlist">
             {% for article in allarticles %}
                 <div class="card">
-                    <a href="{{ article.url }}">
+                    <a href="{{ article.url }}" target="_blank">
                         <img  class="cardimg" src="{{ article.imageurl }}" alt="{{ article.body }}">
                         <div class="cardcontainer">
                             <p class="cardp">{{ article.body }}</p>
