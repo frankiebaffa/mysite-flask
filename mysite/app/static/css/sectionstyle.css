@@ -8,6 +8,7 @@ html, body {
 
 .container-fluid {
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .aboutdescript {
@@ -22,4 +23,4 @@ html, body {
 
 .aboutimg {
     margin-bottom: 15px;
-}
+
