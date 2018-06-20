@@ -43,23 +43,6 @@ body {
     color: red;
 }
 
-.formcard {
-    /* Add shadows to create the "card" effect */
-    padding-top: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 50%;
-    min-width: 400px;
-    height: 380px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 5px;
-    box-shadow: 0 8px 4px 0 rgba(0,0,0,0.2);
-    transition: 0.4s;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .forminput, .formtextarea, .formsubmit {
     display: block;
     margin-left: auto;
@@ -67,7 +50,7 @@ body {
 }
 
 .forminput, .formtextarea {
-    min-width: 375px;
+    min-width: 275px;
 }
 
 .formlabel {
