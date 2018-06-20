@@ -35,7 +35,7 @@
     margin-right: auto;
 }
 
-.card:hover, .pagecard:hover .formcard:hover {
+.card:hover, .pagecard:hover, .formcard:hover {
     background: rgba(0, 0, 0, 0.85);
     box-shadow: 0 16px 8px 0 rgba(0, 0, 0, 0.4);
 }
