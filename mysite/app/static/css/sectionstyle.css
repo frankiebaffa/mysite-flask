@@ -9,3 +9,17 @@ html, body {
 .container-fluid {
     overflow-y: scroll;
 }
+
+.aboutdescript {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+.aboutdescript > a {
+    color: red;
+    text-decoration: none !important;
+}
+
+.aboutimg {
+    margin-bottom: 15px;
+}
