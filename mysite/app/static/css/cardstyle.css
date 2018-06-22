@@ -52,6 +52,46 @@
     margin-right: auto;
 }
 
+.cardsubmit {
+    margin-top: -15px;
+}
+
+.loginformcard {
+    height: 200px;
+}
+
+.createarticlecard {
+    height: 250px;
+}
+
+.createblogcard {
+    height: 300px;
+}
+
+.editcarddelete {
+    margin-top: -20px;
+}
+
+.editcardsubmit {
+    margin-top: -25px;
+}
+
+.posteditdelete {
+    margin-top: -15px;
+}
+
+.posteditsubmit {
+    margin-top: 0px;
+}
+
+.editarticlecard {
+    height: 275px;
+}
+
+.editpostcard {
+    height: 350px;
+}
+
 .card:hover, .pagecard:hover, .formcard:hover {
     background: rgba(0, 0, 0, 0.85);
     box-shadow: 0 16px 8px 0 rgba(0, 0, 0, 0.4);
