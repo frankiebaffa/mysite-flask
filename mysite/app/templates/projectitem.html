@@ -7,30 +7,32 @@
 
 {% block content %}
 <div class="container-fluid gencontainer projectcontainer sectionpage">
-   <div class="row subhead">
-        <div class="col-lg-12">
-            <h1 class="newmain">
-                Recent Projects
-            </h1>
-            <p class="descript">
-                Works, contributions, communities
-            </p>
-        </div>
-   </div><br>
-    <div class="row blogrow">
-        <div class="col-md-4">
-            <div class="pagecard">
-                <img class="cardimg" src="{{ projectitem.imageurl }}" title="blogimage" />
-                <div class="cardcontainer">
-                    <p class="cardp">
-                        {{ projectitem.title }}
-                    </p>
-                </div>	
+    <div class="sectioncontainer">
+        <div class="row subhead">
+            <div class="col-lg-12">
+                <h1 class="newmain">
+                    Recent Projects
+                </h1>
+                <p class="descript">
+                    Works, contributions, communities
+                </p>
             </div>
-        </div>
-        <div class="col-md-8">
-            <div class="contentcontainer">
-                <p class="aboutdescript">{{ projectitem.body|safe }}</p>
+        </div><br>
+        <div class="row blogrow">
+            <div class="col-md-4">
+                <div class="pagecard">
+                    <img class="cardimg" src="{{ projectitem.imageurl }}" title="blogimage" />
+                    <div class="cardcontainer">
+                        <p class="cardp">
+                            {{ projectitem.title }}
+                        </p>
+                    </div>	
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="contentcontainer">
+                    <p class="aboutdescript">{{ projectitem.body|safe }}</p>
+                </div>
             </div>
         </div>
     </div>
