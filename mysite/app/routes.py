@@ -177,8 +177,10 @@ def managearticles():
         createform = ArticleCreateForm()
         editform = ArticleEditForm()
         if createform.validate_on_submit():
-            article = Article(body=createform.body.data, url=createform.url.data,
-                imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
+            article = Article(body=createform.body.data,
+                url=createform.url.date,
+                imageurl=url_for('static',
+                filename='img/{}'.format(createform.imageurl.data)),
                 author=current_user)
             db.session.add(article)
             db.session.commit()
