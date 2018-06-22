@@ -17,10 +17,10 @@
             </p>
         </div>
    </div><br>
-    <div class="row"> 
+    <div class="row blogrow">
         <div class="col-md-4">
             <div class="pagecard">
-            	<img class="cardimg" src="{{ post.imageurl }}" title="blogimage" />
+                <img class="cardimg" src="{{ post.imageurl }}" title="blogimage" />
                 <div class="cardcontainer">
                     <p class="cardp">
                         {{ post.title }}<br>
@@ -30,10 +30,13 @@
             </div>
         </div>
         <div class="col-md-8">
-            <p class="aboutdescript">{{ post.body|safe }}</p>
+            <div class="contentcontainer">
+                <p class="aboutdescript">{{ post.body|safe }}</p>
+            </div>
         </div>
     </div>
 </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/sectionexpand.js') }}"></script>
 {% include 'footer.html' %}
 {% endblock content %}
