@@ -1,11 +1,39 @@
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}">
 {% endblock style %}
 
 {% extends "basenew.html" %}
 
 {% block content %}
 <div class="container-fluid gencontainer projectcontainer" id="blog">
+
+    <!--    
+            Modals placed at the top of page as webkit overflow scrolling touch
+            does not play well with any type of mobile z-indexing
+    -->
+    {% for post in allposts %}
+    <div id="modalpost{{ post.id }}" class="modal">
+        <div class="modal-content">
+            <h1 class="modalhead">{{ post.title }}</h1>
+            <img  class="modalimg" src="{{ post.imageurl }}" alt="{{ post.title }}">
+            <p class="modalsubhead">{{ post.timestamp }}</p><br>
+            <p class="modalp">{{ post.body|safe }}</p>
+        </div>
+    </div> 
+    {% endfor %}
+    
+    {% for project in allprojects %}
+    <div id="modal{{ project.id }}" class="modal">
+        <div class="modal-content">
+            <h1 class="modalhead">{{ project.title }}</h1>
+            <img  class="modalimg" src="{{ project.imageurl }}" alt="{{ project.title }}">
+            <p class="modalsubhead">{{ project.timestamp }}</p><br>
+            <p class="modalp">{{ project.body|safe }}</p>
+        </div>
+    </div>
+    {% endfor %}
+
     <div class="row subhead">
         <div class="col-lg-12">
             <h1 class="newmain">
@@ -19,14 +47,25 @@
     <div class="row listcontainer">
         <div class="cardlist">
             {% for project in allprojects %}
-                <div class="card">
-                    <a href="/projects/{{ project.id }}">
+                <div class="card" id="button{{ project.id }}">
+                    <a>
                         <img  class="cardimg" src="{{ project.imageurl }}" alt="{{ project.title }}">
                         <div class="cardcontainer">
                             <p class="cardp">{{ project.title }}</p>
                         </div>
                     </a>
                 </div>
+                <script>
+                    var modal{{ project.id }} = document.getElementById('modal{{ project.id }}');
+                    var btn{{ project.id }} = document.getElementById("button{{ project.id }}");
+                    btn{{ project.id }}.onclick = function() {
+                        modal{{ project.id }}.style.display = "block";
+                    }
+                    modal{{ project.id }}.onclick = function() {
+                        modal{{ project.id }}.style.display = "none";
+                    }
+                </script>
+
             {% endfor %}
         </div>
     </div>
@@ -45,14 +84,24 @@
     <div class="row listcontainer">
         <div class="cardlist">
             {% for post in allposts %}
-                <div class="card">
-                    <a href="/blog/{{ post.id }}">
+                <div class="card" id="buttonpost{{ post.id }}">
+                    <a>
                         <img  class="cardimg" src="{{ post.imageurl }}" alt="{{ post.title }}">
                         <div class="cardcontainer">
                             <p class="cardp">{{ post.title }}</p>
                         </div>
                     </a>
                 </div>
+                <script>
+                    var modalpost{{ post.id }} = document.getElementById('modalpost{{ post.id }}');
+                    var btnpost{{ post.id }} = document.getElementById("buttonpost{{ post.id }}");
+                    btnpost{{ post.id }}.onclick = function() {
+                        modalpost{{ post.id }}.style.display = "block";
+                    }
+                    modalpost{{ post.id }}.onclick = function() {
+                        modalpost{{ post.id }}.style.display = "none";
+                    }
+                </script>
             {% endfor %}
         </div>
     </div>

@@ -1,0 +1,90 @@
+/* The Modal (background) */
+html {
+    position: relative;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1 !important;
+    -webkit-transform: translateZ(0px);
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-perspective: 1000;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: rgba(0,0,0,0.8) !important;
+    height: 80%;
+    overflow-y: scroll;
+    /*-webkit-overflow-scrolling: touch;*/
+  	margin: 55px auto;
+    padding: 20px;
+    border: 1px solid grey !important;
+    border-radius: 5px !important;
+    width: 90%;
+}
+
+.modalhead {
+    font-size: 35px;
+    text-align: center;
+    color: white;
+}
+
+.modalimg {
+    display: block;
+    width: 90%;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modalsubhead {
+    color: white;
+    font-size: 13px;
+    text-align: center;
+}
+
+.modalp {
+    color: white;
+    font-size: 15px;
+}
+
+.modalp > a {
+    color: red;
+    text-decoration: none !important;
+}
+
+.modalp > a:hover {
+    color: grey;
+}
+
+/* The Close Button */
+.close {
+    color: white !important;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
