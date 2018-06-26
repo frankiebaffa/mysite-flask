@@ -4,36 +4,10 @@
 {% endblock style %}
 
 {% extends "basenew.html" %}
+{% include "modals.html" %}
 
 {% block content %}
-<div class="container-fluid gencontainer projectcontainer" id="blog">
-
-    <!--    
-            Modals placed at the top of page as webkit overflow scrolling touch
-            does not play well with any type of mobile z-indexing
-    -->
-    {% for post in allposts %}
-    <div id="modalpost{{ post.id }}" class="modal">
-        <div class="modal-content">
-            <h1 class="modalhead">{{ post.title }}</h1>
-            <img  class="modalimg" src="{{ post.imageurl }}" alt="{{ post.title }}">
-            <p class="modalsubhead">{{ post.timestamp }}</p><br>
-            <p class="modalp">{{ post.body|safe }}</p>
-        </div>
-    </div> 
-    {% endfor %}
-    
-    {% for project in allprojects %}
-    <div id="modal{{ project.id }}" class="modal">
-        <div class="modal-content">
-            <h1 class="modalhead">{{ project.title }}</h1>
-            <img  class="modalimg" src="{{ project.imageurl }}" alt="{{ project.title }}">
-            <p class="modalsubhead">{{ project.timestamp }}</p><br>
-            <p class="modalp">{{ project.body|safe }}</p>
-        </div>
-    </div>
-    {% endfor %}
-
+<div class="container-fluid gencontainer projectcontainer" id="blog">    
     <div class="row subhead">
         <div class="col-lg-12">
             <h1 class="newmain">
@@ -55,17 +29,7 @@
                         </div>
                     </a>
                 </div>
-                <script>
-                    var modal{{ project.id }} = document.getElementById('modal{{ project.id }}');
-                    var btn{{ project.id }} = document.getElementById("button{{ project.id }}");
-                    btn{{ project.id }}.onclick = function() {
-                        modal{{ project.id }}.style.display = "block";
-                    }
-                    modal{{ project.id }}.onclick = function() {
-                        modal{{ project.id }}.style.display = "none";
-                    }
-                </script>
-
+                {% include 'projectmodaljs.html' %}    
             {% endfor %}
         </div>
     </div>
@@ -92,16 +56,7 @@
                         </div>
                     </a>
                 </div>
-                <script>
-                    var modalpost{{ post.id }} = document.getElementById('modalpost{{ post.id }}');
-                    var btnpost{{ post.id }} = document.getElementById("buttonpost{{ post.id }}");
-                    btnpost{{ post.id }}.onclick = function() {
-                        modalpost{{ post.id }}.style.display = "block";
-                    }
-                    modalpost{{ post.id }}.onclick = function() {
-                        modalpost{{ post.id }}.style.display = "none";
-                    }
-                </script>
+                {% include 'blogmodaljs.html' %}
             {% endfor %}
         </div>
     </div>
