@@ -1,5 +1,6 @@
 from app import app, db, models
 from app.models import Article, User, Post, Project, About
+from os import walk
 from flask import Flask, url_for, render_template, redirect, flash, request
 from flask_login import current_user, login_user, logout_user
 from app.forms import LoginForm, ArticleCreateForm, PostCreateForm
@@ -23,8 +24,9 @@ def index():
     allprojects = Project.query.order_by(Project.timestamp.desc()).all()
     allarticles = Article.query.order_by(Article.timestamp.desc()).all()
     allposts = Post.query.order_by(Post.timestamp.desc()).all()
+    aboutparagraphs = About.query.order_by(About.id).all()
     return render_template('indexscroll.html', allprojects=allprojects,
-        allposts=allposts, allarticles=allarticles)
+        allposts=allposts, allarticles=allarticles, aboutparagraphs=aboutparagraphs)
 
 #@app.route('/projects')
 #@app.route('/projects/')
@@ -82,11 +84,12 @@ def login():
 @app.route('/contact/', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
+    aboutparagraphs = About.query.order_by(About.id).all()
     sent = ''
     if request.method == 'POST':
         if form.validate() == False:
             flash('All fields are required.')
-            return render_template('contact.html', form=form)
+            return render_template('contact.html', form=form, aboutparagraphs=aboutparagraphs)
         else:
             msg = Message(form.subject.data, sender='frankiebaffa.com@gmail.com',
                 recipients=['frankiebaffa@gmail.com'])
@@ -97,10 +100,10 @@ def contact():
             """ % (form.name.data, form.email.data, form.message.data)
             mail.send(msg)
             sent = 'Your message has been sent!'
-            return render_template('contact.html', form=form, sent=sent)
+            return render_template('contact.html', form=form, sent=sent, aboutparagraphs=aboutparagraphs)
 
     elif request.method == 'GET':
-        return render_template('contact.html', form=form, sent=sent)
+        return render_template('contact.html', form=form, sent=sent, aboutparagraphs=aboutparagraphs)
 
 @app.route('/aboutm')
 @app.route('/aboutme/')
@@ -157,16 +160,18 @@ def upload():
 def manageabout():
     if current_user.is_authenticated:
         createform = AboutCreateForm()
+        results = About.query.order_by(About.id).all()
         editform = AboutEditForm()
+
+        return render_template('manageabout.html', title='Manage About',
+            createform=createform, editform=editform, items = results)
+ 
         if createform.validate_on_submit():
             about = About(body=createform.body.data, author=current_user)
             db.session.add(about)
             db.session.commit()
             flash('Posted')
             return redirect(url_for('manageabout'))
-        results = About.query.order_by(About.id).all()
-        return render_template('manageabout.html', title='Manage About',
-            createform=createform, editform=editform, items = results)
     else:
         return redirect(url_for('index'))
 
@@ -176,11 +181,14 @@ def managearticles():
     if current_user.is_authenticated:
         createform = ArticleCreateForm()
         editform = ArticleEditForm()
+        
+        createform.imagefile = imageselect(createform.imagefile)
+
         if createform.validate_on_submit():
             article = Article(body=createform.body.data,
-                url=createform.url.date,
+                url=createform.url.data,
                 imageurl=url_for('static',
-                filename='img/{}'.format(createform.imageurl.data)),
+                filename='img/{}'.format(createform.imagefile.data)),
                 author=current_user)
             db.session.add(article)
             db.session.commit()
@@ -198,9 +206,12 @@ def manageposts():
     if current_user.is_authenticated:
         createform = PostCreateForm()
         editform = PostEditForm()
+
+        createform.imagefile = imageselect(createform.imagefile)
+
         if createform.validate_on_submit():
             post = Post(title=createform.title.data, body=createform.body.data,
-                imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
+                imageurl=url_for('static', filename='img/{}'.format(createform.imagefile.data)),
                 author=current_user)
             db.session.add(post)
             db.session.commit()
@@ -218,10 +229,13 @@ def manageprojects():
     if current_user.is_authenticated:
         createform = ProjectCreateForm()
         editform = ProjectEditForm()
+
+        createform.imagefile = imageselect(createform.imagefile)
+
         if createform.validate_on_submit():
             project = Project(title=createform.title.data, body=createform.body.data,
                 url=createform.url.data,
-                imageurl=url_for('static', filename='img/{}'.format(createform.imageurl.data)),
+                imageurl=url_for('static', filename='img/{}'.format(createform.imagefile.data)),
                 author=current_user)
             db.session.add(project)
             db.session.commit()
@@ -357,3 +371,15 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
+#==============================================================================
+#   Functions
+#==============================================================================
+
+def imageselect(selectfield):
+    imagefiles = []
+    for (dirpath, dirnames, filenames) in walk(app.config['UPLOADED_PHOTOS_DEST']):
+        for i in range(len(filenames)):
+            imagefiles.append(filenames[i])
+    selectfield.choices = [(imagefiles[i], imagefiles[i]) for i in range(len(imagefiles))]
+    return selectfield
