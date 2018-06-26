@@ -8,12 +8,13 @@
 {% endblock styles %}
 
 {% block scripts %}
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 {{ super() }}
 {% endblock scripts %}
 
 {% block navbar %}
 {% include "navbar.html" %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/aboutmodal.js') }}"></script>
 <div class="padbase"></div>
 {% endblock %}
 
