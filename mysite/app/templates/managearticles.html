@@ -32,8 +32,8 @@
                         {% endfor %}
                     </p>
                     <p>
-                        {{ createform.imageurl(class_="forminput") }}<br>
-                        {% for error in createform.imageurl.errors %}
+                        {{ createform.imagefile(class_="forminput") }}<br>
+                        {% for error in createform.imagefile.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
