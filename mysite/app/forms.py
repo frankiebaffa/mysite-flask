@@ -1,12 +1,13 @@
+from os import walk
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms import TextAreaField, validators
+from wtforms import TextAreaField, SelectField, validators
 from wtforms.validators import DataRequired
 
 # Create form for logging-in users
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": " Username"})
-    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": " Email"})
+    password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": " Password"})
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
@@ -14,13 +15,13 @@ class LoginForm(FlaskForm):
 class ArticleCreateForm(FlaskForm):
     body = StringField('Body', validators=[DataRequired()], render_kw={"placeholder": " Title"})
     url = StringField('URL', validators=[DataRequired()], render_kw={"placeholder": " URL"})
-    imageurl = StringField('Image File Name', validators=[DataRequired()], render_kw={"placeholder": " Image File Name"})
+    imagefile = SelectField('Image', choices=[('x', 'x')], coerce=str)
     submit = SubmitField('Post')
 
 # Create form for creating new blog post
 class PostCreateForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()], render_kw={"placeholder": " Title"})
-    imageurl = StringField('Image File Name', validators=[DataRequired()], render_kw={"placeholder": " Image File Name"})
+    imagefile = SelectField('Image', choices=[('x', 'x')], coerce=str)
     body = TextAreaField('Body', validators=[DataRequired()], render_kw={"placeholder": " Body"})
     submit = SubmitField('Post')
 
@@ -28,7 +29,7 @@ class PostCreateForm(FlaskForm):
 class ProjectCreateForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()], render_kw={"placeholder": " Title"})
     url = StringField('URL', validators=[DataRequired()], render_kw={"placeholder": " URL"})
-    imageurl = StringField('Image File Name', validators=[DataRequired()], render_kw={"placeholder": " Image File Name"})
+    imagefile = SelectField('Image', choices=[('x', 'x')], coerce=str)
     body = TextAreaField('Body', validators=[DataRequired()], render_kw={"placeholder": " Body"})
     submit = SubmitField('Post')
 
