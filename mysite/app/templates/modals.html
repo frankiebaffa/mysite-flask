@@ -1,0 +1,38 @@
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}" />
+{% endblock styles %}
+
+{% for post in allposts %}
+<div id="modalpost{{ post.id }}" class="modal">
+    <div class="modal-content">
+        <h1 class="modalhead">{{ post.title }}</h1>
+        <img  class="modalimg" src="{{ post.imageurl }}" alt="{{ post.title }}">
+        <p class="modalsubhead">{{ post.timestamp }}</p><br>
+        <p class="modalp">{{ post.body|safe }}</p>
+    </div>
+</div> 
+{% endfor %}
+
+{% for project in allprojects %}
+<div id="modal{{ project.id }}" class="modal">
+    <div class="modal-content">
+        <h1 class="modalhead">{{ project.title }}</h1>
+        <img  class="modalimg" src="{{ project.imageurl }}" alt="{{ project.title }}">
+        <p class="modalsubhead">{{ project.timestamp }}</p><br>
+        <p class="modalp">{{ project.body|safe }}</p>
+    </div>
+</div>
+{% endfor %}
+
+<div id="modalabout" class="modal">
+    <div class="modal-content">
+        <h1 class="modalhead">About Me</h1>
+        <p class="modalsubhead">Influences, self, circuitry</p><br>
+        <img  class="modalimg" src="{{ url_for('static', filename='img/linkedinphoto.jpg') }}" alt="About Me"><br>
+        <p class="modalp">
+        {% for paragraph in aboutparagraphs %}
+            {{ paragraph.body|safe }}<br>
+        {% endfor %}
+        </p>
+    </div>
+</div> 

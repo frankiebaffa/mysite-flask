@@ -1,0 +1,10 @@
+<script>
+    var modal{{ project.id }} = document.getElementById('modal{{ project.id }}');
+        var btn{{ project.id }} = document.getElementById("button{{ project.id }}");
+        btn{{ project.id }}.onclick = function() {
+            modal{{ project.id }}.style.display = "block";
+        }
+        modal{{ project.id }}.onclick = function() {
+            modal{{ project.id }}.style.display = "none";
+        }
+</script>

@@ -1,0 +1,10 @@
+<script>
+    var modalpost{{ post.id }} = document.getElementById('modalpost{{ post.id }}');
+    var btnpost{{ post.id }} = document.getElementById("buttonpost{{ post.id }}");
+    btnpost{{ post.id }}.onclick = function() {
+        modalpost{{ post.id }}.style.display = "block";
+    }
+    modalpost{{ post.id }}.onclick = function() {
+        modalpost{{ post.id }}.style.display = "none";
+    }
+</script>
