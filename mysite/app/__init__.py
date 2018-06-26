@@ -72,8 +72,8 @@ def adminnavbar():
         'Frankie Baffa',
         View('Home', 'index'),
         View('About', 'aboutme'),
-        View('Manage', 'manage'),
         View('Contact', 'contact'),
+        View('Manage', 'manage'),
         View('Upload', 'upload'),
         View('Logout', 'logout'))
     nav.register_element('top', navconfig)
