@@ -10,6 +10,7 @@
 
 a:hover {
     text-decoration: none !important;
+    cursor: pointer !important;
 }
 
 .padbase {

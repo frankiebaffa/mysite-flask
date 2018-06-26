@@ -68,6 +68,18 @@
     height: 300px;
 }
 
+.createprojectcard {
+    height: 375px;
+}
+
+.createaboutcard {
+    height: 400px;
+}
+
+.createabouttextarea {
+    height: 300px;
+}
+
 .editcarddelete {
     margin-top: -20px;
 }
@@ -90,6 +102,21 @@
 
 .editpostcard {
     height: 350px;
+}
+
+.editprojectcard {
+    height: 450px;
+}
+
+.abouteditsubmit {
+    margin-top: 5px;
+}
+
+.abouteditdelete {
+    display: block;
+    margin-top -10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .card:hover, .pagecard:hover, .formcard:hover {
