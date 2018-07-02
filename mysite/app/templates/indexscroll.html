@@ -4,7 +4,11 @@
 {% endblock style %}
 
 {% extends "basenew.html" %}
+
+{% block head %}
+{{ super() }}
 {% include "modals.html" %}
+{% endblock head %}
 
 {% block content %}
 <div class="container-fluid gencontainer projectcontainer" id="blog">    
