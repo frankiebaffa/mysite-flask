@@ -1,0 +1,63 @@
+<script>
+    var textarea = document.getElementById('editbody{{ item.id }}');
+    textarea.innerHTML = "{{ item.body }}"
+    var selectedimg = $('#editimg{{ item.id }}').val();
+
+    $(document).ready(function() {
+        $('#editboldbtn{{ item.id }}').click(function() {
+            $('#editbody{{ item.id }}').insertAtCaret('**x**');
+        });
+
+        $('#edititalicbtn{{ item.id }}').click(function() {
+            $('#editbody{{ item.id }}').insertAtCaret('_x_');
+        });
+
+        $('#editlinebrbtn{{ item.id }}').click(function() {
+            $('#editbody{{ item.id }}').insertAtCaret('\n');
+        });
+
+        $('#editlinkbtn{{ item.id }}').click(function() {
+            $('#editbody{{ item.id }}').insertAtCaret('[text](URL)');
+        });
+    });
+
+    $('#editimg{{ item.id }}').change(function() {
+        selectedimg = $('editimg{{ item.id }}').val();
+    });
+
+    var turndownService = new TurndownService();
+    var converter = new Markdown.Converter();
+
+    $("#previewbtn{{ item.id }}").click(function() {
+        var title = $("#edittitle{{ item.id }}").val();
+        var img = $("#editimg{{ item.id }}").val();
+        var body = $("#editbody{{ item.id }}").val();
+        body = body.replace(/\n/g, '<br>');
+        body = converter.makeHtml(body);
+        body = body.slice(3, -4);
+        $("#modalpreviewhead").html(title);
+        $("#modalpreviewimg").attr("src", img);
+        $("#modalpreviewsubhead").html("{{ item.timestamp }}")
+        $("#modalpreviewp").html(body);
+        $("#modalpreview").css("display", "block");
+    });
+
+    $("#modalpreview").click(function() {
+        $("#modalpreview").css("display", "none");
+    });
+
+    $(document).ready(function() {
+        var editbody = $('#editbody{{ item.id }}').val();
+        $('#editbody{{ item.id }}').val(turndownService.turndown(editbody));
+    });
+
+    $('#editsubmit{{ item.id }}').click(function() {
+        var editbody = $('#editbody{{ item.id }}');
+        var bodyval = editbody.val();
+        bodyval = bodyval.replace(/\n/g, '<br>');
+        bodyval = converter.makeHtml(bodyval);
+        bodyval = bodyval.slice(3, -4);
+        editbody.val(bodyval);
+    });
+
+</script>
