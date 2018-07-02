@@ -330,7 +330,8 @@ nav .navbar-brand {
     color: white;
     border: none;
     margin-bottom: 10px;
-    width: 80%
+    width: 80%;
+    -webkit-appearance: none;
 }
 
 .formtextarea {

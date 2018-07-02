@@ -65,7 +65,7 @@
 }
 
 .createblogcard {
-    height: 300px;
+    height: 400px;
 }
 
 .createprojectcard {
@@ -80,6 +80,14 @@
     height: 300px;
 }
 
+.createposttextarea {
+    height: 100px;
+}
+
+.editposttextarea {
+    height: 100px;
+}
+
 .editcarddelete {
     margin-top: -20px;
 }
@@ -89,7 +97,7 @@
 }
 
 .posteditdelete {
-    margin-top: -15px;
+    margin-top: -5px;
 }
 
 .posteditsubmit {
@@ -101,7 +109,7 @@
 }
 
 .editpostcard {
-    height: 350px;
+    height: 400px;
 }
 
 .editprojectcard {
@@ -110,6 +118,26 @@
 
 .abouteditsubmit {
     margin-top: 5px;
+}
+
+.markupbtncontainer {
+    display: flex;
+    justify-content: center;
+}
+
+#previewbtn {
+    margin-top: -40px;
+}
+
+.markupbtn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: grey;
+    border: none;
+    margin-top: 0px;
+    margin-right: 2.5px;
+    margin-left: 2.5px;
+    display: inline-block;
 }
 
 .abouteditdelete {
