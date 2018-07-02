@@ -51,6 +51,7 @@ class ArticleEditForm(FlaskForm):
 
 class PostEditForm(FlaskForm):
     newtitle = StringField('Title', validators=[DataRequired()], render_kw={"placeholder": " Title"})
+    imagefile = SelectField('Image', choices=[('x', 'x')], coerce=str)
     newimageurl = StringField('Image File Name', validators=[DataRequired()], render_kw={"placeholder": " Image URL"})
     newbody = TextAreaField('Body', validators=[DataRequired()], render_kw={"placeholder": " Body"})
     submit = SubmitField('Update')
