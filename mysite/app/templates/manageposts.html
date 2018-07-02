@@ -1,10 +1,27 @@
-{% block style %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
-{% endblock style %}
-
 {% extends "basenew.html" %}
 
+{% block head %}
+{{ super() }}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/markupbtns.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/Markdown.Converter.js') }}"></script>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}">
+
+{% endblock head %}
+
 {% block content %}
+<div id="modalpreview" class="modal">
+    <div class="modal-content">
+        <h1 class="modalhead" id="modalpreviewhead"></h1>
+        <img  class="modalimg" id="modalpreviewimg" src="" alt="">
+        <p class="modalsubhead" id="modalpreviewsubhead"></p>
+        <p class="modalp" id="modalpreviewp"></p>
+    </div>
+</div> 
 <div class="container-fluid gencontainer articlecontainer">
     <div class="row subhead">
         <div class="col-lg-12">
@@ -20,26 +37,33 @@
                 <form class="cardform" action="" method="POST">
                 {{ createform.hidden_tag() }}
                     <p>
-                        {{ createform.title(class_="forminput") }}<br>
+                        {{ createform.title(class_="forminput", id="createtitle") }}<br>
                         {% for error in createform.title.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
                     <p>
-                        {{ createform.imagefile(class_="forminput") }}<br>
+                        {{ createform.imagefile(class_="forminput", id="createimg") }}<br>
                         {% for error in createform.imagefile.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
                     <p>
-                        {{ createform.body(class_="formtextarea") }}<br>
+                        {{ createform.body(class_="formtextarea createposttextarea", id="bodytextarea") }}<br>
                         {% for error in createform.body.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
-                    <p>{{ createform.submit(class_="formsubmit cardsubmit") }}</p>
+                    <p>{{ createform.submit(class_="formsubmit cardsubmit") }}</p><br>
                 </form>
-            </div>
+                <p><button class="formsubmit cardsubmit" id="previewbtn">Preview</button></p>
+                <div class="markupbtncontainer">
+                    <button class="formsubmit cardsubmit markupbtn" id="createboldbtn"><strong>B</strong></button>
+                    <button class="formsubmit cardsubmit markupbtn" id="createitalicbtn"><i>I</i></button>
+                    <button class="formsubmit cardsubmit markupbtn" id="createlinebrbtn">&crarr;</button>
+                    <button class="formsubmit cardsubmit markupbtn" id="createlinkbtn"><strong>&#9741;</strong></button>
+                </div>
+            </div> 
         </div>
     </div>
 </div>
@@ -60,38 +84,83 @@
                 {{ editform.hidden_tag() }}
                     <input class="form" type="hidden" value="{{ item.title }}" name="oldtitle">
                         <p>
-                            {{ editform.newtitle(class_="forminput", value=item.title) }}<br>
+                            {{ editform.newtitle(class_="forminput", value=item.title, id="edittitle"+item.id|string) }}<br>
                             {% for error in editform.newtitle.errors %}
                             <span style="color: red;">[{{ error }}]</span>
                             {% endfor %}
                         </p>
                         <p>
-                            {{ editform.newimageurl(class_="forminput", value=item.imageurl) }}<br>
-                            {% for error in editform.newimageurl.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
+                            {{ editform.imagefile(class_="forminput", id="editimg"+item.id|string) }}<br>
+                            {% for errors in editform.imagefile.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
                             {% endfor %}
                         </p>
                         <p>
-                            {{ editform.newbody(class_="formtextarea", id=item.id) }}<br>
+                            {{ editform.newbody(class_="formtextarea editposttextarea", id="editbody"+item.id|string) }}<br>
                             {% for error in editform.newbody.errors %}
                             <span style="color: red;">[{{ error }}]</span>
                             {% endfor %}
                         </p>
-                        <p>{{ editform.submit(class_="formsubmit posteditsubmit") }}</p>
+                        <p>{{ editform.submit(class_="formsubmit posteditsubmit", id="editsubmit"+item.id|string) }}</p>
                 </form>
                 <form class="cardform" method="POST" action="/manage/posts/delete">
                     <input class="form" type="hidden" value="{{ item.title }}" name="title">
                     <input class="formsubmit formdelete posteditdelete" type="submit" value="Delete"><br>
                 </form>
+                <p><button class="formsubmit cardsubmit" id="previewbtn{{ item.id }}">Preview</button></p>
+                <div class="markupbtncontainer">
+                    <button class="formsubmit cardsubmit markupbtn" id="editboldbtn{{ item.id }}"><strong>B</strong></button>
+                    <button class="formsubmit cardsubmit markupbtn" id="edititalicbtn{{ item.id }}"><i>I</i></button>
+                    <button class="formsubmit cardsubmit markupbtn" id="editlinebrbtn{{ item.id }}">&crarr;</button>
+                    <button class="formsubmit cardsubmit markupbtn" id="editlinkbtn{{ item.id }}"><strong>&#9741;</strong></button>
+                </div>
             </div>
+            {% include 'editloopjs.html' %}
             <script>
-                var textarea = document.getElementById('{{ item.id }}');
-                textarea.innerHTML = "{{ item.body }}"
+                $(document).ready(function() {
+                    $('#editimg{{ item.id }}').val('{{ item.imageurl }}');
+                });
             </script>
         {% endfor %}
         </div>
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
+<script>
+    var converter = new Markdown.Converter();
+    var selectedimg;
+
+$(document).ready(function() {
+    selectedimg = $("#createimg").val();
+})
+
+    $("#createimg").change(function() {
+        selectedimg = $("#createimg").val();
+    });
+
+    $("#previewbtn").click(function() {
+        var title = $("#createtitle").val();
+        var img = $("#createimg").val();
+        var body = $("#bodytextarea").val();
+        body = body.replace(/\n/g, '<br>');
+        body = converter.makeHtml(body);
+        body = body.slice(3, -4);
+        $("#modalpreviewhead").html(title);
+        $("#modalpreviewimg").attr("src", selectedimg);
+        $("#modalpreviewsubhead").html("POST DATETIME WILL BE HERE")
+        $("#modalpreviewp").html(body);
+        $("#modalpreview").css("display", "block");
+    });
+
+    $("#modalpreview").click(function() {
+        $("#modalpreview").css("display", "none");
+    });
+
+    $("#submit").click(function() {
+        var body = $("#bodytextarea").val();
+        body = body.replace(/\n/g, '<br>');
+        body = converter.makeHtml(body);
+        body = body.slice(3, -4);
+        $("#bodytextarea").val(converter.makeHtml(body));    
+    });
+</script>
 {% endblock content %}
