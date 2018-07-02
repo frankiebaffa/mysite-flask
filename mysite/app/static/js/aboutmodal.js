@@ -1,12 +1,16 @@
-var modalabout= document.getElementById('modalabout');
-var btnabout = document.querySelector('[title="About"]');
-var navcollapse = document.querySelector('[class="navbar-toggle collapsed"]');
-btnabout.onclick = function() {
-    modalabout.style.display = "block";
-    navcollapse.click();
-}
-modalabout.onclick = function() {
-    modalabout.style.display = "none";
-}
-var aboutnav = document.querySelector('[title="About"]');
-aboutnav.removeAttribute("href");
+$(document).ready(function() {
+    var modalabout = $('#modalabout');
+    var btnabout = $("a[title|='About']");
+    var navcollapse = $("select[class='navbar-toggle collapsed']");
+
+    btnabout.removeAttr('href');
+    btnabout.click(function() {
+        $('#modalabout').css('display', 'block');
+        navcollapse.click();
+    });
+    modalabout.click(function() {
+        modalabout.css('display', 'none');
+    });
+
+});
+    
