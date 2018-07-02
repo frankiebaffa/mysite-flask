@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = local_settings.SECRET_KEY
 
 # Assign the directory of photo uploads
-app.config['UPLOADED_PHOTOS_DEST'] = 'app/static/img'
+app.config['UPLOADED_PHOTOS_DEST'] = 'app/static/img/uploads'
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
