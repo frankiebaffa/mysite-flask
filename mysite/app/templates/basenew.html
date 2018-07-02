@@ -1,21 +1,22 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Frankie Baffa{% endblock title %}
 
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/stylenew.css') }}" />
-{% endblock styles %}
-
-{% block scripts %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-{{ super() }}
-{% endblock scripts %}
-
 {% block navbar %}
 {% include "navbar.html" %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/aboutmodal.js') }}"></script>
 <div class="padbase"></div>
 {% endblock %}
+
+{% block head%}
+{{ super() }}
+
+<!-- Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/aboutmodal.js') }}"></script>
+
+<!-- Styles -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/stylenew.css') }}" />
+
+{% endblock head %}
 
 {% block content %}{% endblock content %}
