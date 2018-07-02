@@ -208,10 +208,11 @@ def manageposts():
         editform = PostEditForm()
 
         createform.imagefile = imageselect(createform.imagefile)
+        editform.imagefile = imageselect(editform.imagefile)
 
         if createform.validate_on_submit():
             post = Post(title=createform.title.data, body=createform.body.data,
-                imageurl=url_for('static', filename='img/{}'.format(createform.imagefile.data)),
+                imageurl=createform.imagefile.data,
                 author=current_user)
             db.session.add(post)
             db.session.commit()
@@ -323,11 +324,12 @@ def updatepost():
         newtitle = request.form.get("newtitle")
         oldtitle = request.form.get("oldtitle")
         newbody = request.form.get("newbody")
+        imagefile = request.form.get("imagefile")
         newimageurl = request.form.get("newimageurl")
         post = Post.query.filter_by(title=oldtitle).first()
         post.title = newtitle
         post.body = newbody
-        post.imageurl = newimageurl
+        post.imageurl = imagefile
         db.session.commit()
         return redirect(url_for('manageposts'))
     else:
@@ -381,5 +383,5 @@ def imageselect(selectfield):
     for (dirpath, dirnames, filenames) in walk(app.config['UPLOADED_PHOTOS_DEST']):
         for i in range(len(filenames)):
             imagefiles.append(filenames[i])
-    selectfield.choices = [(imagefiles[i], imagefiles[i]) for i in range(len(imagefiles))]
+    selectfield.choices = [(url_for('static', filename='img/uploads/{}'.format(imagefiles[i])), imagefiles[i]) for i in range(len(imagefiles))]
     return selectfield
