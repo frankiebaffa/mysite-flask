@@ -183,12 +183,12 @@ def managearticles():
         editform = ArticleEditForm()
         
         createform.imagefile = imageselect(createform.imagefile)
+        editform.imagefile = imageselect(editform.imagefile)
 
         if createform.validate_on_submit():
             article = Article(body=createform.body.data,
                 url=createform.url.data,
-                imageurl=url_for('static',
-                filename='img/{}'.format(createform.imagefile.data)),
+                imageurl=createform.imagefile.data,
                 author=current_user)
             db.session.add(article)
             db.session.commit()
@@ -296,11 +296,12 @@ def updatearticle():
         newbody = request.form.get("newbody")
         oldbody = request.form.get("oldbody")
         newurl = request.form.get("newurl")
+        imagefile = request.form.get("imagefile")
         newimageurl = request.form.get("newimageurl")
         article = Article.query.filter_by(body=oldbody).first()
         article.body = newbody
         article.url = newurl
-        article.imageurl = newimageurl
+        article.imageurl = imagefile
         db.session.commit()
         return redirect(url_for('managearticles'))
     else:

@@ -46,6 +46,7 @@ class ContactForm(FlaskForm):
 class ArticleEditForm(FlaskForm):
     newbody = StringField('Body', validators=[DataRequired()], render_kw={"placeholder": " Title"})
     newurl = StringField('URL', validators=[DataRequired()], render_kw={"placeholder": " URL"})
+    imagefile = SelectField('IMage', choices=[('x', 'x')], coerce=str)
     newimageurl = StringField('Image File Name', validators=[DataRequired()], render_kw={"placeholder": " Image URL"})
     submit = SubmitField('Update')
 
