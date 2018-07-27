@@ -1,72 +1,55 @@
-{% block style %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
-{% endblock style %}
+{% extends 'basenew.html' %}
 
-{% extends "basenew.html" %}
+{% block head %}
+{{ super() }}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/markupbtns.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/Markdown.Converter.js') }}"></script>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sectionstyle.css') }}">
+
+{% endblock head %}
 
 {% block content %}
-<div class="container-fluid gencontainer aboutcontainer">
+<div class="container-fluid gencontainer aboutcontainer editaboutcontainer">
     <div class="row subhead">
         <div class="col-lg-12">
             <h1 class="newmain">
-                Create About Paragraph
+                Edit About Section
             </h1>
-            <p class="descript"></p>
+            <p class="descript">
+             
+            </p>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="formcard createaboutcard">
-                <form class="cardform" action="" method="POST">
-                {{ createform.hidden_tag() }}
+                {% for item in items %}
+                 <form class="cardform" action="{{ url_for('updateabout') }}" method="POST" enctype=multipart/form-data>
+                {{ editform.hidden_tag() }}
+                    <input class="form" type="hidden" value="{{ item.id }}" name="id">
                     <p>
-                        {{ createform.body(class_="forminput createabouttextarea") }}<br>
-                        {% for error in createform.body.errors %}
+                        {{ editform.newbody(class_="formtextarea editabouttextarea", id="editbody"+item.id|string) }}<br>
+                        {% for error in editform.newbody.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
-                    <p>{{ createform.submit(class_="formsubmit") }}</p>
+                    <p>{{ editform.submit(class_="formsubmit abouteditsubmit", id="editsubmit"+item.id|string) }}</p>
                 </form>
+                <form method="POST" class="inline" action="/manage/about/delete">
+                    <input class="" type="hidden" value="{{ item.id }}" name="id">
+                    <input class="form formdelete abouteditdelete" type="submit" value="Delete"><br>
+                </form>
+                {% include 'editloopjs.html' %}
+                {% endfor %}
             </div>
         </div>
     </div>
-    <div class="container-fluid gencontainer blogcontainer">
-        <div class="row subhead">
-            <div class="col-12">
-                <h1 class="newmain">
-                    Edit About Paragraphs
-                </h1>
-                <p class="descript"></p>
-            </div>
-        </div>
-        <div class="row listcontainer">
-            <div class="cardlist cardformlist">
-            {% for item in items %}
-                <div class="card editaboutcard">
-                    <form class="cardform" action="{{ url_for('updateabout') }}" method="POST" enctype=multipart/form-data>
-                    {{ editform.hidden_tag() }}
-                        <input class="form" type="hidden" value="{{ item.id }}" name="oldtitle">
-                        <p>
-                            {{ editform.newbody(class_="formtextarea", id=item.id) }}<br>
-                            {% for error in editform.newbody.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
-                            {% endfor %}
-                        </p>
-                        <p>{{ editform.submit(class_="formsubmit abouteditsubmit") }}</p>
-                    </form>
-                    <form method="POST" class="inline" action="/manage/about/delete">
-                        <input class="" type="hidden" value="{{ item.id }}" name="id">
-                        <input class="form formdelete abouteditdelete" type="submit" value="Delete"><br>
-                    </form>
-                </div>
-                <script>
-                    var textarea = document.getElementById('{{ item.id }}');
-                    textarea.innerHTML = "{{ item.body }}"
-                </script>
-            {% endfor %}
-        </div>
-    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
 {% endblock content %}
