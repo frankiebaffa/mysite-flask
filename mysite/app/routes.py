@@ -108,7 +108,7 @@ def contact():
 @app.route('/aboutm')
 @app.route('/aboutme/')
 def aboutme():
-    about = About.query.order_by(About.id).all()
+    about = About.query.order_by(About.id).first()
     return render_template('aboutme.html', about=about)
 
 #==============================================================================
@@ -218,6 +218,7 @@ def manageposts():
             db.session.commit()
             flash('Posted!')
             return redirect(url_for('manageposts'))
+
         results = Post.query.order_by(Post.timestamp.desc()).all()
         return render_template('manageposts.html', title='Manage Posts',
             createform=createform, editform=editform, items=results)
@@ -232,6 +233,7 @@ def manageprojects():
         editform = ProjectEditForm()
 
         createform.imagefile = imageselect(createform.imagefile)
+        editform.imagefile = imageselect(editform.imagefile)
 
         if createform.validate_on_submit():
             project = Project(title=createform.title.data, body=createform.body.data,
@@ -311,11 +313,11 @@ def updatearticle():
 def updateabout():
     if current_user.is_authenticated:
         newbody = request.form.get("newbody")
-        oldbody = request.form.get("oldbody")
-        about = About.query.filter_by(body=oldbody).first()
+        id = request.form.get("id")
+        about = About.query.filter_by(id=id).first()
         about.body = newbody
         db.session.commit()
-        return redirect(url_for('managearticles'))
+        return redirect(url_for('manageabout'))
     else:
         return redirect(url_for('index'))
 
@@ -343,12 +345,12 @@ def updateproject():
         oldtitle = request.form.get("oldtitle")
         newbody = request.form.get("newbody")
         newurl = request.form.get("newurl")
-        newimageurl = request.form.get("newimageurl")
+        imagefile = request.form.get("imagefile")
         project = Project.query.filter_by(title=oldtitle).first()
         project.title = newtitle
         project.body = newbody
         project.url = newurl
-        project.imageurl = newimageurl
+        project.imageurl = imagefile
         db.session.commit()
         return redirect(url_for('manageprojects'))
     else:
