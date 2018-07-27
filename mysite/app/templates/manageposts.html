@@ -14,14 +14,7 @@
 {% endblock head %}
 
 {% block content %}
-<div id="modalpreview" class="modal">
-    <div class="modal-content">
-        <h1 class="modalhead" id="modalpreviewhead"></h1>
-        <img  class="modalimg" id="modalpreviewimg" src="" alt="">
-        <p class="modalsubhead" id="modalpreviewsubhead"></p>
-        <p class="modalp" id="modalpreviewp"></p>
-    </div>
-</div> 
+{% include 'managemodal.html' %}
 <div class="container-fluid gencontainer articlecontainer">
     <div class="row subhead">
         <div class="col-lg-12">
@@ -125,42 +118,5 @@
         </div>
     </div>
 </div>
-<script>
-    var converter = new Markdown.Converter();
-    var selectedimg;
-
-$(document).ready(function() {
-    selectedimg = $("#createimg").val();
-})
-
-    $("#createimg").change(function() {
-        selectedimg = $("#createimg").val();
-    });
-
-    $("#previewbtn").click(function() {
-        var title = $("#createtitle").val();
-        var img = $("#createimg").val();
-        var body = $("#bodytextarea").val();
-        body = body.replace(/\n/g, '<br>');
-        body = converter.makeHtml(body);
-        body = body.slice(3, -4);
-        $("#modalpreviewhead").html(title);
-        $("#modalpreviewimg").attr("src", selectedimg);
-        $("#modalpreviewsubhead").html("POST DATETIME WILL BE HERE")
-        $("#modalpreviewp").html(body);
-        $("#modalpreview").css("display", "block");
-    });
-
-    $("#modalpreview").click(function() {
-        $("#modalpreview").css("display", "none");
-    });
-
-    $("#submit").click(function() {
-        var body = $("#bodytextarea").val();
-        body = body.replace(/\n/g, '<br>');
-        body = converter.makeHtml(body);
-        body = body.slice(3, -4);
-        $("#bodytextarea").val(converter.makeHtml(body));    
-    });
-</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/editfill.js') }}"></script>
 {% endblock content %}
