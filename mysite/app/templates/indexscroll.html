@@ -1,13 +1,18 @@
+{#
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}">
 {% endblock style %}
-
+#}
 {% extends "basenew.html" %}
 
 {% block head %}
 {{ super() }}
+
 {% include "modals.html" %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}">
 {% endblock head %}
 
 {% block content %}
@@ -22,18 +27,18 @@
             </p>
         </div>
     </div>
-    <div class="row listcontainer">
+    <div class="row listcontainer" id="projectlistcontainer">
         <div class="cardlist">
             {% for project in allprojects %}
-                <div class="card" id="button{{ project.id }}">
-                    <a>
-                        <img  class="cardimg" src="{{ project.imageurl }}" alt="{{ project.title }}">
-                        <div class="cardcontainer">
-                            <p class="cardp">{{ project.title }}</p>
-                        </div>
-                    </a>
-                </div>
-                {% include 'projectmodaljs.html' %}    
+            <div class="card" id="button{{ project.id }}">
+                <a>
+                    <img  class="cardimg" src="{{ project.imageurl }}" alt="{{ project.title }}">
+                    <div class="cardcontainer">
+                        <p class="cardp">{{ project.title }}</p>
+                    </div>
+                </a>
+            </div>
+            {% include 'projectmodaljs.html' %}    
             {% endfor %}
         </div>
     </div>
@@ -80,7 +85,7 @@
         <div class="cardlist">
             {% for article in allarticles %}
                 <div class="card">
-                    <a href="{{ article.url }}" target="_blank">
+                    <a class="articlelink" href="{{ article.url }}" target="_blank">
                         <img  class="cardimg" src="{{ article.imageurl }}" alt="{{ article.body }}">
                         <div class="cardcontainer">
                             <p class="cardp">{{ article.body }}</p>
@@ -88,6 +93,11 @@
                     </a>
                 </div>
             {% endfor %}
+            <script>
+                $(document).ready(function() {
+                    $('.articlelink').attr('target', '_blank');
+                });
+            </script>
         </div>
     </div>
 </div>
