@@ -61,6 +61,7 @@ class ProjectEditForm(FlaskForm):
     newtitle = StringField('Title', validators=[DataRequired()], render_kw={"placeholder": " Title"})
     newurl = StringField('URL', validators=[DataRequired()], render_kw={"placeholder": " URL"})
     newimageurl = StringField('Image File Name', validators=[DataRequired()], render_kw={"placeholder": " Image URL"})
+    imagefile = SelectField('Image', choices=[('x', 'x')], coerce=str)
     newbody = TextAreaField('Body', validators=[DataRequired()], render_kw={"placeholder": " Body"})
     submit = SubmitField('Update')
 
