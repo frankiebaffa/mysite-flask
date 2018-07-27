@@ -114,6 +114,14 @@ body {
     background-image: url("/static/img/ComputerOffice.jpg");
 }
 
+.editaboutcontainer {
+    height: 100%;
+}
+
+.bigcardcontainer {
+    height: 700px;
+}
+
 .projecthead {
     background-color: red;
     opacity: .6;
@@ -428,6 +436,23 @@ nav .navbar-brand {
 
 .managelink:hover {
     color: red;
+}
+
+.scrollbutton {
+    background: rgba(0, 0, 0, 0.6);
+    color: red;
+    border: none;
+    position: fixed;
+    height: 490px;
+    width: 10px;
+}
+
+#right-button {
+    right: 0;
+}
+
+#left-button {
+    left: 0;
 }
 
 @media (min-width: 2000px) {

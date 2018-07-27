@@ -28,6 +28,7 @@ html {
     border: 1px solid grey !important;
     border-radius: 5px !important;
     width: 90%;
+    max-width: 900px;
 }
 
 .modalhead {

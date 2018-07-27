@@ -2,7 +2,15 @@
     width: 100%;
     overflow: auto;
     height: 450px;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;    
+}
+
+.biglistcontainer {
+    height: 550px;
+}
+
+.editaboutcontainer {
+    height: 100%;
 }
 
 .card {
@@ -69,22 +77,35 @@
 }
 
 .createprojectcard {
-    height: 375px;
+    height: 425px;
 }
 
 .createaboutcard {
-    height: 400px;
+    height: 85%;
+    width: 97.5%;
 }
 
 .createabouttextarea {
-    height: 300px;
+    height: 80% !important;
+}
+
+.editabouttextarea {
+    height: 80% !important;
 }
 
 .createposttextarea {
     height: 100px;
 }
 
+.createprojecttextarea {
+    height: 100px;
+}
+
 .editposttextarea {
+    height: 100px;
+}
+
+.editprojecttextarea {
     height: 100px;
 }
 
@@ -113,11 +134,12 @@
 }
 
 .editprojectcard {
-    height: 450px;
+    height: 500px;
 }
 
 .abouteditsubmit {
     margin-top: 5px;
+    margin-bottom: -5px;
 }
 
 .markupbtncontainer {
@@ -127,6 +149,18 @@
 
 #previewbtn {
     margin-top: -40px;
+}
+
+.createprojectpreviewbtn {
+    margin-top: -20px !important;
+}
+
+.editprojectpreviewbtn {
+    margin-top: 0px !important;
+}
+
+.projecteditdelete {
+    margin-top: 10px;
 }
 
 .markupbtn {
@@ -153,12 +187,18 @@
 }
 
 .cardimg {
+    transition: 0.4s;
     box-shadow: 0 8px 4px 0 rgba(0,0,0,0.2);
+    opacity: 0.6;
     border-radius: 5px;
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 90%;
+}
+
+.cardimg:hover {
+    opacity: 1.0;
 }
 
 .cardimg {
