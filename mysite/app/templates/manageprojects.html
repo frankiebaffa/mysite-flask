@@ -1,10 +1,20 @@
-{% block style %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
-{% endblock style %}
-
 {% extends "basenew.html" %}
 
+{% block head %}
+{{ super() }}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/markupbtns.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/Markdown.Converter.js') }}"></script>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cardstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalstyle.css') }}">
+
+{% endblock head %}
+
 {% block content %}
+{% include 'manageprojectmodal.html' %}
 <div class="container-fluid gencontainer projectcontainer">
     <div class="row subhead">
         <div class="col-lg-12">
@@ -19,44 +29,54 @@
                 <form class="cardform" action="" method="POST">
                 {{ createform.hidden_tag() }}
                     <p>
-                        {{ createform.title(class_="forminput") }}<br>
+                        {{ createform.title(class_="forminput", id="createtitle") }}<br>
                         {% for error in createform.title.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
                     <p>
-                        {{ createform.url(class_="forminput") }}<br>
+                        {{ createform.url(class_="forminput", id="createurl") }}<br>
                         {% for error in createform.url.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
                     <p>
-                        {{ createform.imagefile(class_="forminput") }}<br>
+                        {{ createform.imagefile(class_="forminput", id="createimg") }}<br>
                         {% for error in createform.imagefile.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
                     <p>
-                        {{ createform.body(class_="formtextarea") }}<br>
+                        {{ createform.body(class_="formtextarea createprojecttextarea", id="bodytextarea") }}<br>
                         {% for error in createform.body.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
                     <p>{{ createform.submit(class_="formsubmit cardsubmit") }}</p>
                 </form>
+                <p><button class="formsubmit cardsubmit createprojectpreviewbtn" id="previewbtn">Preview</button></p>
+                <div class="markupbtncontainer">
+                    <button class="formsubmit cardsubmit markupbtn" id="createboldbtn"><strong>B</strong></button>
+                    <button class="formsubmit cardsubmit markupbtn" id="createitalicbtn"><i>I</i></button>
+                    <button class="formsubmit cardsubmit markupbtn" id="createlinebrbtn">&crarr;</button>
+                    <button class="formsubmit cardsubmit markupbtn" id="createlinkbtn"><strong>&#9741;</strong></button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="container-fluid gencontainer blogcontainer">
+<div class="container-fluid gencontainer blogcontainer bigcardcontainer">
     <div class="row subhead">
         <div class="col-lg-12">
             <h1 class="newmain">
                 Edit
             </h1>
+            <p class="descript">
+                Use these cards to edit existing projects
+            </p>
         </div>
     </div>
-    <div class="row listcontainer">
+    <div class="row listcontainer biglistcontainer">
         <div class="cardlist cardformlist">
         {% for item in items %}
             <div class="card editprojectcard">
@@ -76,32 +96,40 @@
                             {% endfor %}
                         </p>
                         <p>
-                            {{ editform.newimageurl(class_="forminput", value=item.imageurl) }}<br>
-                            {% for error in editform.newimageurl.errors %}
-                            <span style="color: red;">[{{ error }}]</span>
+                            {{ editform.imagefile(class_="forminput", id="editimg"+item.id|string) }}<br>
+                            {% for errors in editform.imagefile.errors %}
+                            <span style = "color: red;">[{{ error }}]</span>
                             {% endfor %}
-                        </p>
+                        </p>                        
                         <p>
-                            {{ editform.newbody(class_="formtextarea", id=item.id) }}<br>
+                            {{ editform.newbody(class_="formtextarea editprojecttextarea", id="editbody"+item.id|string) }}<br>
                             {% for error in editform.newbody.errors %}
                             <span style="color: red;">[{{ error }}]</span>
                             {% endfor %}
                         </p>
-                        <p>{{ editform.submit(class_="formsubmit posteditsubmit") }}</p>
-                </form>
-                <form class="cardform" method="POST" action="/manage/projects/delete">
-                    <input class="form" type="hidden" value="{{ item.title }}" name="title">
-                    <input class="formsubmit formdelete posteditdelete" type="submit" value="Delete"><br>
-                </form>
+                        <p>{{ editform.submit(class_="formsubmit posteditsubmit", id="editsubmit"+item.id|string) }}</p>
+                    </form>
+                    <p><button class="formsubmit cardsubmit editprojectpreviewbtn" id="previewbtn{{ item.id }}">Preview</button></p>
+                    <div class="markupbtncontainer">
+                        <button class="formsubmit cardsubmit markupbtn" id="editboldbtn{{ item.id }}"><strong>B</strong></button>
+                        <button class="formsubmit cardsubmit markupbtn" id="edititalicbtn{{ item.id }}"><i>I</i></button>
+                        <button class="formsubmit cardsubmit markupbtn" id="editlinebrbtn{{ item.id }}">&crarr;</button>
+                        <button class="formsubmit cardsubmit markupbtn" id="editlinkbtn{{ item.id }}"><strong>&#9741;</strong></button>
+                    </div>
+                    <form class="cardform" method="POST" action="/manage/projects/delete">
+                        <input class="form" type="hidden" value="{{ item.title }}" name="title">
+                        <input class="formsubmit formdelete projecteditdelete" type="submit" value="Delete"><br>
+                    </form>
             </div>
+            {% include 'editloopjs.html' %}
             <script>
-                var textarea = document.getElementById('{{ item.id }}');
-                textarea.innerHTML = "{{ item.body }}"
+                $(document).ready(function() {
+                    $('#editimg{{ item.id }}').val('{{ item.imageurl }}');
+                });
             </script>
         {% endfor %}
         </div>
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/cardscroll.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/editfill.js') }}"></script>
 {% endblock content %}
