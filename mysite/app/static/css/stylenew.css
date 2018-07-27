@@ -140,7 +140,7 @@ body {
     background-color: black;
     position: fixed;
     width: 100%;
-    background-image: linear-gradient(to bottom right, black, black, white, black);/*url('/static/img/code.jpg');*/
+    /*background-image: linear-gradient(to bottom right, black, black, white, black);url('/static/img/code.jpg');*/
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
